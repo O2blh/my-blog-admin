@@ -1,0 +1,47 @@
+.NavBox {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 160px;
+  height: 100%;
+  background-color: #001529;
+  color: white;
+}
+
+.siteName {
+  margin: 15px;
+  width: 130px;
+  height: 40px;
+  line-height: 40px;
+  font-size: 16px;
+  text-align: center;
+  background-color: #334454;
+}
+.navItem {
+  text-align: center;
+  height: 40px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.navItem:hover {
+  background-color: #004280;
+  box-shadow: inset 0 0 14px rgb(0 0 0 / 80%);
+}
+.navItem a {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-size: 16px;
+}
+.navItem:hover a {
+  color: #40a9ff;
+}
+
+.active {
+  background-color: #004280;
+  box-shadow: inset 0 0 14px rgb(0 0 0 / 80%);
+}

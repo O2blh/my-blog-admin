@@ -1,0 +1,31 @@
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  min-width: 1920px;
+}
+
+@font-face {
+  font-family: "FiraCode";
+  src: url(./FiraCode-Regular.ttf);
+  font-weight: normal;
+  font-style: normal;
+}
+
+a,
+a:link,
+a:visited,
+a:hover,
+a:active {
+  text-decoration: none;
+}
+
+ul,
+li {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
