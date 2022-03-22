@@ -1,0 +1,35 @@
+.welcomeBox {
+  position: relative;
+  flex: 2 1;
+  transition: all 0.2;
+}
+.welcomeBox:hover {
+  box-shadow: 0 0 10px rgb(0 0 0 / 40%);
+}
+
+.homeAvatar {
+  position: absolute;
+  left: 20px;
+  top: 50%;
+  transform: translate(0, -50%);
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+}
+.welcomeTitle {
+  position: absolute;
+  left: 150px;
+  top: 24px;
+  font-size: 36px;
+  font-weight: 700;
+}
+.userName {
+  color: #1890ff;
+}
+
+.poemContent {
+  position: absolute;
+  left: 150px;
+  bottom: 24px;
+  font-size: 16px;
+}
