@@ -1,0 +1,26 @@
+.searchBox{
+    display: flex;
+    align-items: center;
+    height: 50px;
+    padding: 0 5px;
+    background-color: #b9dfff;
+}
+.addArticleBtn{
+    height: 40px;
+    margin-right: 5px;
+}
+.searchInput{
+    height: 40px;
+    width: 300px;
+    border: none;
+    outline: none;
+    margin-right: 5px;
+}
+.searchClass{
+    width: 300px;
+    margin-right: 5px;
+}
+.searchTag{
+    width: 300px;
+    margin-right: 5px;
+}

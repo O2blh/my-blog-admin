@@ -1,6 +1,7 @@
 const ROOT = "/";
 const HOME = "/home";
 const ARTICLES = "/articles";
+const ADD_ARTICLE = "/addArticle";
 const PIC = "/pic";
 const SAY = "/say";
 const MSG = "/msg";
@@ -17,6 +18,7 @@ const ROUTES = {
   ROOT,
   HOME,
   ARTICLES,
+  ADD_ARTICLE,
   PIC,
   SAY,
   MSG,
