@@ -1,7 +1,7 @@
 .welcomeBox {
   position: relative;
   flex: 2 1;
-  transition: all 0.2;
+  transition: all 0.2s;
 }
 .welcomeBox:hover {
   box-shadow: 0 0 10px rgb(0 0 0 / 40%);
@@ -31,5 +31,5 @@
   position: absolute;
   left: 150px;
   bottom: 24px;
-  font-size: 16px;
+  font-size: 18px;
 }

@@ -7,3 +7,12 @@ export const BLOG_URL = ""; //博客地址
 export const VISITOR_EMAIL = ""; //游客邮箱
 
 export const VISITOR_PWD = ""; //游客密码
+
+export const VISITOR_NAME = "游客";
+
+export const VISITOR_AVATAR =
+  "https://jack-img.oss-cn-hangzhou.aliyuncs.com/img/20210826221910.jpg";
+
+export const ADMIN_UID = "2f3d6d8e1ebc43168791367a581837d1";
+
+export const ADMIN_NAME = "猪猪";

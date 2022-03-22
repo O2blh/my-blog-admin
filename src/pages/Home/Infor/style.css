@@ -1,0 +1,27 @@
+.inforBox {
+  position: relative;
+  flex: 1 1;
+  transition: all 0.2s;
+  margin-left: 20px;
+  flex-direction: column;
+}
+.inforBox:hover {
+  box-shadow: 0 0 10px rgb(0 0 0 / 40%);
+}
+
+.inforDate {
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%);
+  top: 20px;
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.inforIP {
+  position: absolute;
+  left: 50%;
+  bottom: 20px;
+  transform: translate(-50%);
+  font-size: 18px;
+}

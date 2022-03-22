@@ -1,0 +1,15 @@
+.chartBox {
+  position: relative;
+  height: 100%;
+  flex: 2 1;
+  transition: all 0.2;
+}
+.chartBox:hover {
+  box-shadow: 0 0 10px rgb(0 0 0 / 40%);
+}
+.chartTitle {
+  position: absolute;
+  left: 20px;
+  top: 20px;
+  font-size: 18px;
+}

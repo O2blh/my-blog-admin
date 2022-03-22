@@ -2,3 +2,17 @@
   display: flex;
   height: 140px;
 }
+
+.statisticRegion {
+  flex-direction: row;
+  margin-top: 20px;
+  height: 140px;
+  display: flex;
+}
+
+.chart-class-tag {
+  margin-top: 20px;
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: row;
+}

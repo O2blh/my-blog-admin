@@ -1,0 +1,28 @@
+.noticeBox {
+  position: relative;
+  flex: 1 1;
+  transition: all 0.2s;
+  margin-left: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 18px;
+}
+.noticeBox:hover,
+.noticeContent:hover {
+  box-shadow: 0 0 10px rgb(0 0 0 / 40%);
+}
+
+.noticeTitle {
+  position: absolute;
+  left: 20px;
+  top: 20px;
+}
+
+.noticeContent {
+  width: 60%;
+  height: 80%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

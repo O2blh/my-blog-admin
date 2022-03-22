@@ -1,0 +1,33 @@
+.tagBox {
+  flex: 1 1;
+  margin-left: 20px;
+}
+.tagBox:hover {
+  box-shadow: 0 0 10px rgb(0 0 0 / 40%);
+}
+
+.tagTitle {
+  font-size: 18px;
+  padding: 10px 10px 0;
+}
+.tagCreateBox {
+  height: 50px;
+  display: flex;
+  align-items: center;
+}
+.tagCreateInput {
+  height: 36px;
+  flex: 1 1;
+  border: 1px solid #ccc;
+  margin: 0 10px;
+  padding: 0 10px;
+  outline: none;
+  user-select: none;
+}
+.tagCreateInput:hover {
+  box-shadow: 0 0 4px #1890ff;
+}
+
+.tagCreateBtn {
+  margin-right: 10px;
+}
