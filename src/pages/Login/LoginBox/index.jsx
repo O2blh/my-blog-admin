@@ -1,16 +1,12 @@
-import React, { useCallback, useState } from "react";
+import React, { useState } from "react";
 import { auth } from "../../../utils/cloudBase";
 import { useDispatch } from "react-redux";
 import { login } from "../../../redux/actions";
-import { VISITOR_EMAIL, VISITOR_PWD } from "../../../constants/info";
+import { VISITOR_EMAIL, VISITOR_PWD } from "../../../constants/siteInfo";
+import { reqSvgs } from "../../../utils/commons";
 
 import "./style.css";
 const LoginBox = () => {
-  let reqSvgs = require.context(
-    "../../../assets/images/",
-    true,
-    /\.(jpg|jpeg|png|bmp)$/
-  );
   const avatarUrl = reqSvgs("./tx.png");
 
   const [email, setEmail] = useState("");

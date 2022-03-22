@@ -1,7 +1,7 @@
 import React from "react";
 import { HomeOutlined, LoginOutlined } from "@ant-design/icons";
 import { Popconfirm } from "antd";
-import { BLOG_URL } from "../../../constants/info";
+import { BLOG_URL } from "../../../constants/siteInfo";
 import { useDispatch } from "react-redux";
 import { login } from "../../../redux/actions";
 
