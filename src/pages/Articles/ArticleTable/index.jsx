@@ -97,7 +97,6 @@ const ArticleTabel = ({ articlesShow }) => {
       ),
     },
   ]
-  console.log(articlesShow)
   return (
     <Table
       columns={columns}

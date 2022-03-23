@@ -26,3 +26,19 @@
   justify-content: center;
   align-items: center;
 }
+
+.noticeEditBox {
+    height: 100px;
+    width: 100%;
+    padding: 10px;
+    resize: none;
+    outline: none;
+    border: 1px solid #ccc;
+    transition: all 0.3s;
+    font-size: 16px;
+}
+
+.noticeEditBox:hover {
+    box-shadow: 0 0 4px #1890ff;
+}
+

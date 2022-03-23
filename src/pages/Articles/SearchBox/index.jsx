@@ -69,7 +69,6 @@ const SearchBox = ({ articles, setArtilesShow, classifies, tags }) => {
   }
 
   const onSearchTagChange = (value) => {
-    console.log(value)
     setSearchTag(value)
     searchByTag(value)
   }

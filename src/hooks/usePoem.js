@@ -5,7 +5,6 @@ export default function usePoem() {
   useEffect(() => {
     const jinrishici = require("jinrishici");
     jinrishici.load((result) => {
-      console.log(result);
       setPoem(result.data);
     });
   }, []);

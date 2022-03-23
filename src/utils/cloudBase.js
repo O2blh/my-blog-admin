@@ -8,3 +8,7 @@ export const app = cloudbase.init({
 export const auth = app.auth({
   persistence: "local",
 });
+
+export const db = app.database();
+
+export const _ = db.command;
