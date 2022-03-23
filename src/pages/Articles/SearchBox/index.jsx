@@ -3,31 +3,19 @@ import React, { useRef, useState } from 'react'
 import { Button, Select } from 'antd'
 import { useHistory } from 'react-router-dom'
 import ROUTES from '../../../constants/routes'
+import { isContained } from '../../../utils/commons'
 
 import './style.css'
 
 const { Option } = Select
 
-const isContained = (a, b) => {
-  if (!(a instanceof Array) || !(b instanceof Array)) return false
-  const len = b.length
-  if (a.length < len) return false
-  for (let i = 0; i < len; i++) {
-    if (!a.includes(b[i])) return false
-  }
-  return true
-}
-
 const SearchBox = ({ articles, setArtilesShow, classifies, tags }) => {
   const history = useHistory()
-  const searchWordsRef = useRef()
-  const [searchClassify, setSearchClassify] = useState()
-  const [searchTag, setSearchTag] = useState([])
-
   const turnToAddPage = () => {
     history.push(ROUTES.ADD_ARTICLE)
   }
 
+  const searchWordsRef = useRef()
   const searchByWords = () => {
     const keywords = searchWordsRef.current.value.toLocaleLowerCase()
     if (!keywords) {
@@ -41,6 +29,7 @@ const SearchBox = ({ articles, setArtilesShow, classifies, tags }) => {
     )
   }
 
+  const [searchClassify, setSearchClassify] = useState()
   const searchByClassify = (value) => {
     searchWordsRef.current.value = ''
     setSearchTag([])
@@ -50,7 +39,12 @@ const SearchBox = ({ articles, setArtilesShow, classifies, tags }) => {
     }
     setArtilesShow(articles.filter((article) => article.classify === value))
   }
+  const onSearchClassifyChange = (value) => {
+    searchByClassify(value)
+    setSearchClassify(value)
+  }
 
+  const [searchTag, setSearchTag] = useState([])
   const searchByTag = (tags) => {
     searchWordsRef.current.value = ''
     setSearchClassify(null)
@@ -62,12 +56,6 @@ const SearchBox = ({ articles, setArtilesShow, classifies, tags }) => {
       articles.filter((article) => isContained(article.tags, tags))
     )
   }
-
-  const onSearchClassifyChange = (value) => {
-    searchByClassify(value)
-    setSearchClassify(value)
-  }
-
   const onSearchTagChange = (value) => {
     setSearchTag(value)
     searchByTag(value)
@@ -94,7 +82,7 @@ const SearchBox = ({ articles, setArtilesShow, classifies, tags }) => {
         onChange={onSearchClassifyChange}
       >
         {classifies.map((item) => (
-          <Option key={item}>{item}</Option>
+          <Option key={item._id}>{item.classify}</Option>
         ))}
       </Select>
       <Select
@@ -109,7 +97,7 @@ const SearchBox = ({ articles, setArtilesShow, classifies, tags }) => {
         onChange={onSearchTagChange}
       >
         {tags.map((item) => (
-          <Option key={item}>{item}</Option>
+          <Option key={item._id}>{item.tag}</Option>
         ))}
       </Select>
     </div>

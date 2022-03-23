@@ -3,15 +3,13 @@ import { Table, Tag, Space, Button, Popconfirm, message } from 'antd'
 import { useHistory } from 'react-router-dom'
 import { auth } from '../../../utils/cloudBase'
 import ROUTES from '../../../constants/routes'
-// import {adminUid} from '../../../constants/info'
+import { ADMIN_UID, VISITOR_TEXT } from '../../../constants/siteInfo'
 
 const ArticleTabel = ({ articlesShow }) => {
-  const adminUid = ''
-  const visitorText = ''
   const history = useHistory()
   const editArticle = (id) => {
-    if (auth.currentUser.uid !== adminUid) {
-      message.warning(visitorText)
+    if (auth.currentUser.uid !== ADMIN_UID) {
+      message.warning(VISITOR_TEXT)
       return
     }
     history.push(`${ROUTES.ADD_ARTICLE}?id=${id}$isDraft=`)

@@ -9,7 +9,7 @@ import './style.css'
 const Classify = () => {
   const inputRef = useRef()
 
-  const [classify] = useClassify()
+  const [classify, getTagsFromDB] = useClassify()
 
   const editCalssify = () => {
     if (!editingCalssify) {
@@ -26,6 +26,7 @@ const Classify = () => {
         classify: editingCalssify,
       })
       .then((res) => {
+        getTagsFromDB()
         message.success('更新成功!')
         cancleEdit()
       })
@@ -36,6 +37,7 @@ const Classify = () => {
       .doc(classify._id)
       .remove()
       .then((res) => {
+        getTagsFromDB()
         message.success('删除成功')
       })
   }
@@ -55,6 +57,7 @@ const Classify = () => {
         classify: newClassify,
       })
       .then((res) => {
+        getTagsFromDB()
         message.success('添加成功!')
       })
   }

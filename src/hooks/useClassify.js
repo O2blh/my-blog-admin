@@ -9,12 +9,11 @@ export default function useClassify(){
     db.collection('classify')
       .get()
       .then((res) => {
-        console.log(res)
         setClassify(res.data)
       })
   }
   useEffect(() => {
     getClassifyFromDB()
-  }, [classify])
+  },[])
   return [classify, getClassifyFromDB]
 }

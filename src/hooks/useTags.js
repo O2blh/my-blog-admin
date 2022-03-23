@@ -15,6 +15,6 @@ export default function useTags(){
 
   useEffect(() => {
     getTagsFromDB()
-  }, [tagList])
-  return [tagList]
+  },[])
+  return [tagList,getTagsFromDB]
 }

@@ -1,44 +1,9 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { Button, message, Popconfirm, Modal } from 'antd'
 import { CloseOutlined } from '@ant-design/icons'
 import { db } from '../../../utils/cloudBase'
 import './style.css'
 import useTags from '../../../hooks/useTags'
-
-// const tagList = [
-//   {
-//     _id: 1,
-//     tag: 'React',
-//   },
-//   {
-//     _id: 2,
-//     tag: 'Webpack',
-//   },
-//   {
-//     _id: 3,
-//     tag: 'JavaScript',
-//   },
-//   {
-//     _id: 4,
-//     tag: 'Nodejs',
-//   },
-//   {
-//     _id: 5,
-//     tag: 'Mysql',
-//   },
-//   {
-//     _id: 6,
-//     tag: 'Java',
-//   },
-//   {
-//     _id: 7,
-//     tag: 'http',
-//   },
-//   {
-//     _id: 8,
-//     tag: 'Vue',
-//   },
-// ]
 
 const Tags = () => {
   const inputRef = useRef()
@@ -68,7 +33,7 @@ const Tags = () => {
   ]
   const colorLen = tagColor.length
 
-  const [tagList] = useTags()
+  const [tagList, getTagsFromDB] = useTags()
 
   const createTag = () => {
     const newtTag = inputRef.current.value
@@ -87,6 +52,7 @@ const Tags = () => {
       .then((res) => {
         inputRef.current.value = ''
         message.success('创建成功!')
+        getTagsFromDB()
       })
   }
 
@@ -96,6 +62,7 @@ const Tags = () => {
       .remove()
       .then((res) => {
         message.success('删除成功')
+        getTagsFromDB()
       })
   }
 
@@ -116,6 +83,7 @@ const Tags = () => {
       .then((res) => {
         message.success('更新成功!')
         cancelEditModal()
+        getTagsFromDB()
       })
   }
 
