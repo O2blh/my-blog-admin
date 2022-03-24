@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { reqSvgs } from "../../../utils/commons";
 import "./style.css";
-import moment from "moment";
 import {
   VISITOR_AVATAR,
   ADMIN_UID,
@@ -22,7 +21,7 @@ const Welcome = () => {
     }
   }, [avatar, name]);
 
-  const hour = moment().hours();
+  const hour = new Date().getHours();
   const timeText =
     hour < 6
       ? "凌晨好"

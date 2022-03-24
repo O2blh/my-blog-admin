@@ -55,9 +55,11 @@ const Classify = () => {
     db.collection('classify')
       .add({
         classify: newClassify,
+        count: 0,
       })
       .then((res) => {
         getTagsFromDB()
+        inputRef.current.value = ''
         message.success('添加成功!')
       })
   }

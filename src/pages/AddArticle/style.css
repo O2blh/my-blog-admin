@@ -1,5 +1,8 @@
 .articleBox {
   display: flex;
+  flex-direction: column;
+  height: 100%;
+  border-bottom: 1px solid #ccc;
 }
 .articleTitleBox {
   height: 80px;
@@ -70,7 +73,7 @@
   box-shadow: 0 0 10px rgb(0 0 0 / 40%);
 }
 .publishContent::before {
-  content: "";
+  content: '';
   position: absolute;
   width: 16px;
   height: 16px;
@@ -81,4 +84,55 @@
   border-right-color: transparent;
   background-color: white;
   transform: rotate(45deg);
+}
+
+.editBox {
+  flex: 1 1;
+  display: flex;
+  height: calc(100% - 80px);
+  max-height: calc(100% - 80px);
+  min-height: calc(100% - 80px);
+}
+.inputRegion {
+  flex: 1 1;
+  padding: 20px;
+  resize: none;
+}
+.showRegion {
+  flex: 1 1;
+  padding: 20px;
+  border: 1px solid #d9d9d9;
+  overflow-y: auto;
+}
+.showRegion:hover {
+  border-color: #40a9ff;
+}
+
+.fromTitle {
+  padding: 24px 20px 16px 20px;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 24px;
+  color: #1d2129;
+  border-bottom: 1px solid #e5e6eb;
+}
+.formItem {
+  display: flex;
+  margin: 20px 20px 32px;
+}
+.formItemLabel {
+  width: 85px;
+  text-align: right;
+}
+.formItemLabel.require::before {
+  content: '*';
+  color: #f53f3f;
+  vertical-align: -2px;
+}
+.formItemContent {
+  flex: auto;
+  margin: 0 20px;
+}
+.ant-select {
+  width: 100%;
 }

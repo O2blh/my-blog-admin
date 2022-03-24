@@ -1,7 +1,7 @@
 import React from 'react'
 import { Table, Tag, Space, Button, Popconfirm, message } from 'antd'
 import { useHistory } from 'react-router-dom'
-import { auth } from '../../../utils/cloudBase'
+import { auth, db, _ } from '../../../utils/cloudBase'
 import ROUTES from '../../../constants/routes'
 import { ADMIN_UID, VISITOR_TEXT } from '../../../constants/siteInfo'
 
@@ -13,6 +13,31 @@ const ArticleTabel = ({ articlesShow }) => {
       return
     }
     history.push(`${ROUTES.ADD_ARTICLE}?id=${id}$isDraft=`)
+  }
+  const deleteArticle = (id) => {
+    if (auth.currentUser.uid !== ADMIN_UID) {
+      message.warning(VISITOR_TEXT)
+      return
+    }
+    db.collection('article')
+      .doc(id)
+      .remove()
+      .then(() => {
+        message.warning('删除成功')
+      })
+  }
+  // 相应分类数目-1
+  const classMinOne = (oldClass) => {
+    // console.log(oldClass);
+    db.collection('classify')
+      .where({ class: oldClass })
+      .update({
+        count: _.inc(-1),
+      })
+      .then((res) => {
+        if (res.code && res.code === 'DATABASE_PERMISSION_DENIED') return
+        // getAllClasses();
+      })
   }
   const columns = [
     {
@@ -76,12 +101,12 @@ const ArticleTabel = ({ articlesShow }) => {
             placement="topRight"
             title="确定要删除该文章吗？"
             onConfirm={() => {
-              // if (auth.currentUser.uid !== adminUid) {
-              //   message.warning(visitorText)
-              //   return
-              // }
-              // deleteArticle(record._id)
-              // classMinOne(record.classes)
+              if (auth.currentUser.uid !== ADMIN_UID) {
+                message.warning(VISITOR_TEXT)
+                return
+              }
+              deleteArticle(record._id)
+              classMinOne(record.classes)
             }}
             okText="Yes"
             cancelText="No"
