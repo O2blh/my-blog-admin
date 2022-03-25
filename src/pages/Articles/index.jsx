@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import ArticleTabel from './ArticleTable'
 import SearchBox from './SearchBox'
 
@@ -11,6 +11,9 @@ const Articles = () => {
   const [tagList] = useTags()
   const [articles] = useArticles()
   const [articlesShow, setArtilesShow] = useState(articles)
+  useEffect(() => {
+    setArtilesShow(articles)
+  }, [articles])
   return (
     <>
       <SearchBox

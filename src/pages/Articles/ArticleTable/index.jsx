@@ -5,14 +5,15 @@ import { auth, db, _ } from '../../../utils/cloudBase'
 import ROUTES from '../../../constants/routes'
 import { ADMIN_UID, VISITOR_TEXT } from '../../../constants/siteInfo'
 
-const ArticleTabel = ({ articlesShow }) => {
+const ArticleTabel = (props) => {
+  const { articlesShow } = props
   const history = useHistory()
   const editArticle = (id) => {
     if (auth.currentUser.uid !== ADMIN_UID) {
       message.warning(VISITOR_TEXT)
       return
     }
-    history.push(`${ROUTES.ADD_ARTICLE}?id=${id}$isDraft=`)
+    history.push(`${ROUTES.ADD_ARTICLE}?articleId=${id}&isDraft=`)
   }
   const deleteArticle = (id) => {
     if (auth.currentUser.uid !== ADMIN_UID) {
@@ -30,7 +31,7 @@ const ArticleTabel = ({ articlesShow }) => {
   const classMinOne = (oldClass) => {
     // console.log(oldClass);
     db.collection('classify')
-      .where({ class: oldClass })
+      .where({ classify: oldClass })
       .update({
         count: _.inc(-1),
       })
@@ -42,20 +43,20 @@ const ArticleTabel = ({ articlesShow }) => {
   const columns = [
     {
       title: '标题',
-      dataIndex: 'title',
-      key: 'title',
+      dataIndex: 'articleTitle',
+      key: '_id',
       render: (text) => <strong>{text}</strong>,
     },
     {
       title: '发布日期',
       dataIndex: 'publishDate',
-      key: 'publishDate',
+      key: '_id',
       render: (text) => text,
     },
     {
       title: '分类',
       dataIndex: 'classify',
-      key: 'classify',
+      key: '_id',
       render: (text) => (
         <>
           <Tag color="#2db7f5">{text}</Tag>
@@ -64,7 +65,7 @@ const ArticleTabel = ({ articlesShow }) => {
     },
     {
       title: 'Tags',
-      key: 'tags',
+      key: '_id',
       dataIndex: 'tags',
       render: (tags) => (
         <>
@@ -82,7 +83,7 @@ const ArticleTabel = ({ articlesShow }) => {
     {
       title: 'URL',
       dataIndex: 'url',
-      key: 'url',
+      key: '_id',
       render: (text) => (
         <a href={text} target="_blank" rel="noreferrer">
           {text}

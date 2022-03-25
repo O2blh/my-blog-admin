@@ -36,8 +36,7 @@
   right: 100px;
 }
 
-.draftsBtn,
-.publishBtn {
+.commonBtn {
   font-size: 16px;
   padding: 6px 16px;
   outline: none;
@@ -49,17 +48,24 @@
   cursor: pointer;
   transition: all 0.2s;
 }
-.publishBtn {
-  color: white;
-  background-color: #1d7dfa;
-}
-.publishBtn:hover {
-  background-color: #388eff;
-}
-
-.draftsBtn:hover {
+.commonBtn:hover {
   border-color: #388eff;
   color: #388eff;
+}
+.primaryBtn {
+  font-size: 16px;
+  padding: 6px 16px;
+  outline: none;
+  border-radius: 2px;
+  background-color: #1d7dfa;
+  border: 1px solid #1d7dfa;
+  color: white;
+  box-sizing: border-box;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.primaryBtn:hover {
+  background-color: #388eff;
 }
 
 .publishContent {
@@ -135,4 +141,22 @@
 }
 .ant-select {
   width: 100%;
+}
+
+.abstract {
+  position: relative;
+}
+
+.abstractContent {
+  resize: none;
+}
+
+.abstractLength {
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
+}
+
+.formBtn {
+  justify-content: end;
 }
