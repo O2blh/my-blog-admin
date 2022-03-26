@@ -16,4 +16,5 @@
   display: flex;
   flex-direction: column;
   height: calc(100% - 166px);
+  user-select: none;
 }

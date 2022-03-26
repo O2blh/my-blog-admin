@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { Button, List, message, Popconfirm, Modal } from 'antd'
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons'
-import { db } from '../../../utils/cloudBase'
+import { _updateClassify, _deleteClassify } from '../../../network/classify'
 import useClassify from '../../../hooks/useClassify'
 
 import './style.css'
@@ -9,9 +9,9 @@ import './style.css'
 const Classify = () => {
   const inputRef = useRef()
 
-  const [classify, getTagsFromDB] = useClassify()
+  const [classify, getClassifyFromDB] = useClassify()
 
-  const editCalssify = () => {
+  const editCalssify = async () => {
     if (!editingCalssify) {
       message.warning('分类名不能为空!')
       return
@@ -20,29 +20,26 @@ const Classify = () => {
       message.warning('分类名已存在!')
       return
     }
-    db.collection('classify')
-      .doc(editingCalssifyId)
-      .update({
-        classify: editingCalssify,
-      })
-      .then((res) => {
-        getTagsFromDB()
-        message.success('更新成功!')
-        cancleEdit()
-      })
+
+    const res = await _updateClassify(editingCalssifyId, {
+      classify: editingCalssify,
+    })
+    if (res) {
+      message.success('更新成功!')
+      getClassifyFromDB()
+      cancleEdit()
+    }
   }
 
-  const deleteClass = (classify) => {
-    db.collection('classify')
-      .doc(classify._id)
-      .remove()
-      .then((res) => {
-        getTagsFromDB()
-        message.success('删除成功')
-      })
+  const deleteClass = async (classify) => {
+    const res = await _deleteClassify(classify._id)
+    if (res) {
+      message.success('删除成功')
+      getClassifyFromDB()
+    }
   }
 
-  const addClassify = () => {
+  const addClassify = async () => {
     const newClassify = inputRef.current.value
     if (!newClassify) {
       message.info('分类名不能为空!')
@@ -52,16 +49,15 @@ const Classify = () => {
       message.warning('分类名已存在!')
       return
     }
-    db.collection('classify')
-      .add({
-        classify: newClassify,
-        count: 0,
-      })
-      .then((res) => {
-        getTagsFromDB()
-        inputRef.current.value = ''
-        message.success('添加成功!')
-      })
+    const res = await _updateClassify({
+      classify: newClassify,
+      count: 0,
+    })
+    if (res) {
+      getClassifyFromDB()
+      inputRef.current.value = ''
+      message.success('添加成功!')
+    }
   }
 
   const [isModalVisible, setIsModalVisible] = useState(false)

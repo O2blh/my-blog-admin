@@ -1,17 +1,13 @@
 import React from 'react'
-import { db } from '../utils/cloudBase'
+import { _getArtilces } from '../network/article'
 
 const { useState, useEffect } = React
 
 export default function useArticles() {
   const [articles, setArticles] = useState([])
-  const getArticleFromDB = () => {
-    db.collection('article')
-      .get()
-      .then((res) => {
-        console.log(res.data)
-        setArticles(res.data)
-      })
+  const getArticleFromDB = async () => {
+    const data = await _getArtilces()
+    setArticles(data)
   }
   useEffect(() => {
     getArticleFromDB()

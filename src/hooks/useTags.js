@@ -1,9 +1,9 @@
-import React from "react";
-import {db} from '../utils/cloudBase'
+import React from 'react'
+import { db } from '../network/cloudBase'
 
-const {useState, useEffect} = React
+const { useState, useEffect } = React
 
-export default function useTags(){
+export default function useTags() {
   const [tagList, setTagList] = useState([])
   const getTagsFromDB = () => {
     db.collection('tag')
@@ -15,6 +15,6 @@ export default function useTags(){
 
   useEffect(() => {
     getTagsFromDB()
-  },[])
-  return [tagList,getTagsFromDB]
+  }, [])
+  return [tagList, getTagsFromDB]
 }

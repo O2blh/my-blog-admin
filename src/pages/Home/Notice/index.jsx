@@ -1,35 +1,27 @@
-import React, { useEffect, useState } from 'react'
-import { auth, db } from '../../../utils/cloudBase'
+import React, { useState } from 'react'
+import { auth } from '../../../network/cloudBase'
+import { _updateNotice } from '../../../network/notice'
 import { ADMIN_UID, VISITOR_TEXT, NOTICE_ID } from '../../../constants/siteInfo'
 import { Modal, message } from 'antd'
 
 import './style.css'
+import useNotice from '../../../hooks/useNotice'
 const Notice = () => {
   const [isModalVisible, setIsModalVisible] = useState(false)
-  const [notice, setNotice] = useState('')
+  const [notice, getNoticeFromDB] = useNotice()
   const [editingNotice, seteditingNotice] = useState('')
-  const getNoticeFromDB = () => {
-    db.collection('notice')
-      .get()
-      .then((res) => {
-        console.log(res)
-        setNotice(res?.data[0].notice)
-      })
-  }
-  useEffect(() => {
-    getNoticeFromDB()
-  }, [notice])
+  const defaultNotice = '暂时没有公告QAQ~~~'
 
   // 打开对话框
   const openNoticeEdit = () => {
-    seteditingNotice(notice ? notice : '暂时没有公告QAQ~~~')
+    seteditingNotice(notice ? notice : defaultNotice)
     setIsModalVisible(true)
   }
   // 取消对话框
   const noticeEditCancel = () => {
     setIsModalVisible(false)
   }
-  const editNotice = () => {
+  const editNotice = async () => {
     if (!editingNotice) {
       message.warning('公告不可以为空~')
     }
@@ -40,28 +32,25 @@ const Notice = () => {
       message.warning(VISITOR_TEXT)
       return
     }
-    db.collection('notice')
-      .doc(NOTICE_ID)
-      .update({
-        notice: editingNotice,
-      })
-      .then((res) => {
-        console.log(res)
-        if (res.code && res.code === 'DATABASE_PERMISSION_DENIED') {
-          message.warning(VISITOR_TEXT)
-          return
-        }
-        message.success('更新公告成功！')
-        getNoticeFromDB()
-        noticeEditCancel()
-      })
+    const res = await _updateNotice(NOTICE_ID, {
+      notice: editingNotice,
+    })
+    if (res) {
+      if (res.code && res.code === 'DATABASE_PERMISSION_DENIED') {
+        message.warning(VISITOR_TEXT)
+        return
+      }
+      message.success('更新公告成功！')
+      getNoticeFromDB()
+      noticeEditCancel()
+    }
   }
 
   return (
     <div className="noticeBox">
       <div className="noticeTitle">公告</div>
       <div className="noticeContent" onDoubleClick={openNoticeEdit}>
-        {notice ? notice : '暂时没有公告QAQ~~~'}
+        {notice ? notice : defaultNotice}
       </div>
 
       <Modal

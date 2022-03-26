@@ -3,10 +3,16 @@ import { useLocation, useHistory } from 'react-router-dom'
 import ROUTES from '../../constants/routes'
 import useClickAway from '../../hooks/useClickAway'
 import { Input, Select, message } from 'antd'
-import { db, _, auth } from '../../utils/cloudBase'
+import { auth } from '../../network/cloudBase'
+import {
+  _updateArtilce,
+  _createArtilce,
+  _getArtilceById,
+} from '../../network/article'
+import { classMinOne, classPlusOne } from '../../network/classify'
 import { ADMIN_UID, VISITOR_TEXT } from '../../constants/siteInfo'
 import { useClassify, useTags } from '../../hooks'
-import { parshQueryString } from '../../utils/commons'
+import { parshQueryString } from '../../utils/helper'
 import { marked } from 'marked'
 import hljs from 'highlight.js'
 import './github-dark.css'
@@ -31,33 +37,32 @@ const AddArticle = () => {
 
   const [defaultClassify, setDefaultClassify] = useState('')
 
-  useEffect(() => {
-    console.log(queryObj)
+  const getArticleById = async () => {
     if (queryObj.articleId) {
-      db.collection('article')
-        .where({
-          _id: queryObj.articleId,
-        })
-        .get()
-        .then((res) => {
-          if (!res || !res.data || res.data.length === 0) {
-            message.warning('文章不存在')
-            setTimeout(() => {
-              history.push(ROUTES.ARTICLES)
-            }, 1000)
-          }
-          const data = res.data[0]
-          setArticleId(data._id)
-          setArticleTitle(data.articleTitle)
-          setArticleContent(data.articleContent)
-          setMarkdownContent(data.articleContent)
-          setClassify(data.classify)
-          setDefaultClassify(data.classify)
-          setTags(data.tags)
-          setAbstract(data.abstract)
-          setAbstractLength(data.abstract.length)
-        })
+      const res = await _getArtilceById(queryObj.articleId)
+      console.log(res)
+      if (!res || res.length === 0) {
+        message.warning('文章不存在')
+        setTimeout(() => {
+          history.push(ROUTES.ARTICLES)
+        }, 1000)
+        return
+      }
+      const data = res[0]
+      setArticleId(data._id)
+      setArticleTitle(data.articleTitle)
+      setArticleContent(data.articleContent)
+      setMarkdownContent(data.articleContent)
+      setClassify(data.classify)
+      setDefaultClassify(data.classify)
+      setTags(data.tags)
+      setAbstract(data.abstract)
+      setAbstractLength(data.abstract.length)
     }
+  }
+
+  useEffect(() => {
+    getArticleById()
   }, [])
 
   // 配置highlight
@@ -98,7 +103,7 @@ const AddArticle = () => {
   //文章标签数据
   const [tagList] = useTags()
 
-  const createOrUpdateArticle = () => {
+  const createOrUpdateArticle = async () => {
     if (!articleTitle) {
       message.info('请输入文章标题！')
       return
@@ -117,66 +122,43 @@ const AddArticle = () => {
     }
 
     if (articleId) {
-      db.collection('article')
-        .doc(articleId)
-        .update({
-          articleTitle,
-          articleContent,
-          modifyDate: Date.now(),
-          tags,
-          classify,
-          abstract,
-        })
-        .then((res) => {
-          //修改了文章分类
-          if (defaultClassify && defaultClassify !== classify) {
-            classMinOne(defaultClassify)
-            classPlusOne(classify)
-          }
-          message.success('更新成功!')
-        })
-    } else {
-      db.collection('article')
-        .add({
-          articleTitle,
-          articleContent,
-          publishDate: Date.now(),
-          modifyDate: Date.now(),
-          tags,
-          classify,
-          abstract,
-        })
-        .then((res) => {
+      const res = _updateArtilce(articleId, {
+        articleTitle,
+        articleContent,
+        modifyDate: Date.now(),
+        tags,
+        classify,
+        abstract,
+      })
+      if (res) {
+        //修改了文章分类
+        if (defaultClassify && defaultClassify !== classify) {
+          classMinOne(defaultClassify)
           classPlusOne(classify)
-          message.success('发布成功!')
-          setTimeout(() => {
-            history.push(ROUTES.ARTICLES)
-          }, 1000)
-        })
+        }
+        message.success('更新成功!')
+        setTimeout(() => {
+          history.push(ROUTES.ARTICLES)
+        }, 1000)
+      }
+    } else {
+      const res = _createArtilce({
+        articleTitle,
+        articleContent,
+        publishDate: Date.now(),
+        modifyDate: Date.now(),
+        tags,
+        classify,
+        abstract,
+      })
+      if (res) {
+        classPlusOne(classify)
+        message.success('发布成功!')
+        setTimeout(() => {
+          history.push(ROUTES.ARTICLES)
+        }, 1000)
+      }
     }
-  }
-
-  //分类数量+1
-  const classPlusOne = (classify) => {
-    db.collection('classify')
-      .where({ classify: classify })
-      .update({
-        count: _.inc(1),
-      })
-      .then((res) => {
-        if (res.code && res.code === 'DATABASE_PERMISSION_DENIED') return
-      })
-  }
-  //分类数量+1
-  const classMinOne = (classify) => {
-    db.collection('classify')
-      .where({ classify: classify })
-      .update({
-        count: _.inc(-1),
-      })
-      .then((res) => {
-        if (res.code && res.code === 'DATABASE_PERMISSION_DENIED') return
-      })
   }
 
   return (

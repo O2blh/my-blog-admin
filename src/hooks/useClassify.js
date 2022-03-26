@@ -1,9 +1,9 @@
-import React from "react";
-import {db} from '../utils/cloudBase'
+import React from 'react'
+import { db } from '../network/cloudBase'
 
-const {useState,useEffect} = React
+const { useState, useEffect } = React
 
-export default function useClassify(){
+export default function useClassify() {
   const [classify, setClassify] = useState([])
   const getClassifyFromDB = () => {
     db.collection('classify')
@@ -14,6 +14,6 @@ export default function useClassify(){
   }
   useEffect(() => {
     getClassifyFromDB()
-  },[])
+  }, [])
   return [classify, getClassifyFromDB]
 }

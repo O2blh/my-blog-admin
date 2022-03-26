@@ -3,7 +3,7 @@ import React, { useRef, useState } from 'react'
 import { Button, Select } from 'antd'
 import { useHistory } from 'react-router-dom'
 import ROUTES from '../../../constants/routes'
-import { isContained } from '../../../utils/commons'
+import { isContained } from '../../../utils/helper'
 
 import './style.css'
 

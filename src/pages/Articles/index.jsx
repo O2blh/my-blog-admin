@@ -9,7 +9,7 @@ import './style.css'
 const Articles = () => {
   const [classify] = useClassify()
   const [tagList] = useTags()
-  const [articles] = useArticles()
+  const [articles, getArticleFromDB] = useArticles()
   const [articlesShow, setArtilesShow] = useState(articles)
   useEffect(() => {
     setArtilesShow(articles)
@@ -22,7 +22,10 @@ const Articles = () => {
         classifies={classify}
         tags={tagList}
       />
-      <ArticleTabel articlesShow={articlesShow} />
+      <ArticleTabel
+        articlesShow={articlesShow}
+        getArticleFromDB={getArticleFromDB}
+      />
     </>
   )
 }

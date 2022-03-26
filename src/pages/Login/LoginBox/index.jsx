@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
-import { auth } from '../../../utils/cloudBase'
+import { auth } from '../../../network/cloudBase'
 import { useDispatch } from 'react-redux'
 import { login } from '../../../redux/actions'
 import { VISITOR_EMAIL, VISITOR_PWD } from '../../../constants/siteInfo'
-import { reqSvgs } from '../../../utils/commons'
+import { reqSvgs } from '../../../utils/helper'
 
 import './style.css'
 const LoginBox = () => {

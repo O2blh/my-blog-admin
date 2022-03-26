@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react'
 import { Button, message, Popconfirm, Modal } from 'antd'
 import { CloseOutlined } from '@ant-design/icons'
-import { db } from '../../../utils/cloudBase'
+import { _createTag, _deleteTag, _updateTag } from '../../../network/tag'
 import './style.css'
 import useTags from '../../../hooks/useTags'
 
@@ -35,7 +35,7 @@ const Tags = () => {
 
   const [tagList, getTagsFromDB] = useTags()
 
-  const createTag = () => {
+  const createTag = async () => {
     const newtTag = inputRef.current.value
     if (!newtTag) {
       message.warning('标签不可以为空!')
@@ -45,28 +45,25 @@ const Tags = () => {
       message.warning('标签已存在!')
       return
     }
-    db.collection('tag')
-      .add({
-        tag: newtTag,
-      })
-      .then((res) => {
-        inputRef.current.value = ''
-        message.success('创建成功!')
-        getTagsFromDB()
-      })
+    const res = await _createTag({
+      tag: newtTag,
+    })
+    if (res) {
+      inputRef.current.value = ''
+      message.success('创建成功!')
+      getTagsFromDB()
+    }
   }
 
-  const deleteTag = (item) => {
-    db.collection('tag')
-      .doc(item._id)
-      .remove()
-      .then((res) => {
-        message.success('删除成功')
-        getTagsFromDB()
-      })
+  const deleteTag = async (item) => {
+    const res = await _deleteTag(item._id)
+    if (res) {
+      message.success('删除成功')
+      getTagsFromDB()
+    }
   }
 
-  const editTag = () => {
+  const editTag = async () => {
     if (!editName) {
       message.warning('标签不可以为空!')
       return
@@ -75,16 +72,14 @@ const Tags = () => {
       message.warning('标签已存在!')
       return
     }
-    db.collection('tag')
-      .doc(editId)
-      .update({
-        tag: editName,
-      })
-      .then((res) => {
-        message.success('更新成功!')
-        cancelEditModal()
-        getTagsFromDB()
-      })
+    const res = await _updateTag(editId, {
+      tag: editName,
+    })
+    if (res) {
+      message.success('更新成功!')
+      cancelEditModal()
+      getTagsFromDB()
+    }
   }
 
   const [isModalVisible, setIsModalVisible] = useState(false)

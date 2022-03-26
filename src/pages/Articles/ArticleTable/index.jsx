@@ -1,13 +1,17 @@
 import React from 'react'
 import { Table, Tag, Space, Button, Popconfirm, message } from 'antd'
 import { useHistory } from 'react-router-dom'
-import { auth, db, _ } from '../../../utils/cloudBase'
+import { auth } from '../../../network/cloudBase'
+import { _deleteArtilce } from '../../../network/article'
+import { classMinOne } from '../../../network/classify'
 import ROUTES from '../../../constants/routes'
 import { ADMIN_UID, VISITOR_TEXT } from '../../../constants/siteInfo'
+import dayjs from 'dayjs'
 
 const ArticleTabel = (props) => {
-  const { articlesShow } = props
+  const { articlesShow, getArticleFromDB } = props
   const history = useHistory()
+
   const editArticle = (id) => {
     if (auth.currentUser.uid !== ADMIN_UID) {
       message.warning(VISITOR_TEXT)
@@ -15,31 +19,18 @@ const ArticleTabel = (props) => {
     }
     history.push(`${ROUTES.ADD_ARTICLE}?articleId=${id}&isDraft=`)
   }
-  const deleteArticle = (id) => {
+  const deleteArticle = async (id) => {
     if (auth.currentUser.uid !== ADMIN_UID) {
       message.warning(VISITOR_TEXT)
       return
     }
-    db.collection('article')
-      .doc(id)
-      .remove()
-      .then(() => {
-        message.warning('删除成功')
-      })
+    const res = await _deleteArtilce(id)
+    if (res) {
+      message.warning('删除成功')
+      getArticleFromDB()
+    }
   }
-  // 相应分类数目-1
-  const classMinOne = (oldClass) => {
-    // console.log(oldClass);
-    db.collection('classify')
-      .where({ classify: oldClass })
-      .update({
-        count: _.inc(-1),
-      })
-      .then((res) => {
-        if (res.code && res.code === 'DATABASE_PERMISSION_DENIED') return
-        // getAllClasses();
-      })
-  }
+
   const columns = [
     {
       title: '标题',
@@ -51,7 +42,7 @@ const ArticleTabel = (props) => {
       title: '发布日期',
       dataIndex: 'publishDate',
       key: '_id',
-      render: (text) => text,
+      render: (text) => dayjs(text).format('YYYY-MM-DD HH:mm:ss'),
     },
     {
       title: '分类',

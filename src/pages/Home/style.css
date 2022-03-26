@@ -1,17 +1,18 @@
 .outlineBox {
   display: flex;
-  height: 140px;
+  flex: 0 0 140px;
 }
 
 .statisticRegion {
   flex-direction: row;
   margin-top: 20px;
-  height: 140px;
   display: flex;
+  flex: 0 0 140px;
 }
 
 .chart-class-tag {
   margin-top: 20px;
+  /* height: calc(100% - 300px); */
   flex: 1 1 auto;
   display: flex;
   flex-direction: row;
