@@ -11,6 +11,27 @@ import {
 import './style.css'
 
 const Emoji = () => {
+  const emojiClick = (e) => {
+    console.log(e.target.innerText)
+  }
+  console.log(emojiPeople)
+  const wrapEmojiPeople = wrapEmoji(emojiPeople).map((emoji) => {
+    return <span onClick={emojiClick}>{emoji}</span>
+  })
+
+  function wrapEmoji(emojiStr) {
+    let len = emojiStr.length
+    let i = 0
+    const emojiArray = []
+    while (i < len) {
+      if (emojiStr[i] === '\uD83D') {
+      }
+      emojiArray.push(emojiStr.substring(i, i + 2))
+      i += 2
+    }
+    return emojiArray
+  }
+
   return (
     <div className="emojBox">
       <Popover

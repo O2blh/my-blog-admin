@@ -6,9 +6,9 @@ export const BLOG_URL = '' //博客地址
 
 export const SOURCE_CODE_URL = '' //源代码地址
 
-export const VISITOR_EMAIL = '' //游客邮箱
+export const VISITOR_EMAIL = '1821306975@qq.com' //游客邮箱
 
-export const VISITOR_PWD = '' //游客密码
+export const VISITOR_PWD = 'wora,13913688271' //游客密码
 
 export const VISITOR_NAME = '游客'
 

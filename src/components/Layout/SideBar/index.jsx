@@ -2,6 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { useLocation } from 'react-router-dom'
 import ROUTES from '../../../constants/routes'
+import { SITE_NAME } from '../../../constants/siteInfo'
 import './style.css'
 
 const NAVS = [
@@ -52,7 +53,7 @@ const Sidebar = () => {
 
   return (
     <div className="NavBox">
-      <div className="siteName">猪猪的后山</div>
+      <div className="siteName">{SITE_NAME}</div>
       <ul className="savWrapper">
         {NAVS.map((nav, index) => {
           const isActive = pathname.startsWith(nav.route)

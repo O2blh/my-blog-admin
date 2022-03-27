@@ -17,7 +17,6 @@ const LoginBox = () => {
     const user = isVistor ? VISITOR_EMAIL : email
     const password = isVistor ? VISITOR_PWD : pwd
     auth.signInWithEmailAndPassword(user, password).then(() => {
-      // 发送验证邮件成功
       dispatch(login(true))
     })
   }
