@@ -4,7 +4,8 @@ import Layout from './components/Layout'
 import Home from './pages/Home'
 import Articles from './pages/Articles'
 import AddArticle from './pages/AddArticle'
-import Pic from './pages/Pic'
+import Gallery from './pages/Gallery'
+import AddGallery from './pages/AddGallery'
 import Say from './pages/Say'
 import Msg from './pages/Msg'
 import FriendLink from './pages/FriendLink'
@@ -26,7 +27,8 @@ function App() {
         <Route path={ROUTES.HOME} component={Home} />
         <Route path={ROUTES.ARTICLES} component={Articles} />
         <Route path={ROUTES.ADD_ARTICLE} component={AddArticle} />
-        <Route path={ROUTES.PIC} component={Pic} />
+        <Route path={ROUTES.GALLERY} component={Gallery} />
+        <Route path={ROUTES.ADD_GALLERY} component={AddGallery} />
         <Route path={ROUTES.SAY} component={Say} />
         <Route path={ROUTES.MSG} component={Msg} />
         <Route path={ROUTES.FRIEND_LINK} component={FriendLink} />

@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react'
-import ArticleTabel from './ArticleTable'
+import ArticleTable from './ArticleTable'
 import SearchBox from './SearchBox'
 
-import { useClassify, useTags, useArticles } from '../../hooks'
+import { useClassify, useTag, useArticles } from '../../hooks'
 
 import './style.css'
 
 const Articles = () => {
   const [classify] = useClassify()
-  const [tagList] = useTags()
+  const [tagList] = useTag()
   const [articles, getArticleFromDB] = useArticles()
   const [articlesShow, setArtilesShow] = useState(articles)
   useEffect(() => {
@@ -22,7 +22,7 @@ const Articles = () => {
         classifies={classify}
         tags={tagList}
       />
-      <ArticleTabel
+      <ArticleTable
         articlesShow={articlesShow}
         getArticleFromDB={getArticleFromDB}
       />

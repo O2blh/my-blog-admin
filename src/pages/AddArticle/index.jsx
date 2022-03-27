@@ -11,7 +11,7 @@ import {
 } from '../../network/article'
 import { classMinOne, classPlusOne } from '../../network/classify'
 import { ADMIN_UID, VISITOR_TEXT } from '../../constants/siteInfo'
-import { useClassify, useTags } from '../../hooks'
+import { useClassify, useTag } from '../../hooks'
 import { parshQueryString } from '../../utils/helper'
 import { marked } from 'marked'
 import hljs from 'highlight.js'
@@ -101,7 +101,7 @@ const AddArticle = () => {
   //文章分类数据
   const [classifies] = useClassify()
   //文章标签数据
-  const [tagList] = useTags()
+  const [tagList] = useTag()
 
   const createOrUpdateArticle = async () => {
     if (!articleTitle) {

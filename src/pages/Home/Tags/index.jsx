@@ -3,7 +3,7 @@ import { Button, message, Popconfirm, Modal } from 'antd'
 import { CloseOutlined } from '@ant-design/icons'
 import { _createTag, _deleteTag, _updateTag } from '../../../network/tag'
 import './style.css'
-import useTags from '../../../hooks/useTags'
+import { useTag } from '../../../hooks'
 
 const Tags = () => {
   const inputRef = useRef()
@@ -33,7 +33,7 @@ const Tags = () => {
   ]
   const colorLen = tagColor.length
 
-  const [tagList, getTagsFromDB] = useTags()
+  const [tagList, getTagsFromDB] = useTag()
 
   const createTag = async () => {
     const newtTag = inputRef.current.value

@@ -3,7 +3,7 @@ import { db } from '../network/cloudBase'
 
 const { useState, useEffect } = React
 
-export default function useTags() {
+export default function useTag() {
   const [tagList, setTagList] = useState([])
   const getTagsFromDB = () => {
     db.collection('tag')

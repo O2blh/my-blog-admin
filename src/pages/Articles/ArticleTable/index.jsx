@@ -98,7 +98,7 @@ const ArticleTabel = (props) => {
                 return
               }
               deleteArticle(record._id)
-              classMinOne(record.classes)
+              classMinOne(record.classify)
             }}
             okText="Yes"
             cancelText="No"

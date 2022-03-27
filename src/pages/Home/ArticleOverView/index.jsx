@@ -1,62 +1,48 @@
-import React from "react";
-import { Pie } from "@ant-design/plots";
+import React from 'react'
+import { Pie } from '@ant-design/plots'
 
-import "./style.css";
+import './style.css'
+import { useClassify } from '../../../hooks'
 
 const ArticleOverView = () => {
-  const data = [
-    {
-      type: "分类一",
-      value: 27,
-    },
-    {
-      type: "分类二",
-      value: 25,
-    },
-    {
-      type: "分类三",
-      value: 18,
-    },
-    {
-      type: "分类四",
-      value: 15,
-    },
-    {
-      type: "分类五",
-      value: 10,
-    },
-    {
-      type: "其他",
-      value: 5,
-    },
-  ];
+  const [classifies] = useClassify()
+  const data = classifies
+    .filter((item) => {
+      return item.count > 0
+    })
+    .map((classify) => {
+      return {
+        type: classify.classify,
+        value: classify.count,
+      }
+    })
   const config = {
     appendPadding: 10,
     data,
-    angleField: "value",
-    colorField: "type",
+    angleField: 'value',
+    colorField: 'type',
     radius: 0.8,
     autoFit: true,
     legend: false,
     label: {
-      type: "outer",
-      content: "{name} {percentage}",
+      type: 'outer',
+      content: '{name} {percentage}',
     },
     interactions: [
       {
-        type: "pie-legend-active",
+        type: 'pie-legend-active',
       },
       {
-        type: "element-active",
+        type: 'element-active',
       },
     ],
-  };
+  }
   return (
     <div className="chartBox">
       <div className="chartTitle">文章概览</div>
       <Pie {...config} />
     </div>
-  );
-};
+  )
+}
 
-export default ArticleOverView;
+export default ArticleOverView

@@ -1,0 +1,7 @@
+.searchBox {
+  display: flex;
+  align-items: center;
+  height: 50px;
+  padding: 0 5px;
+  background-color: #b9dfff;
+}
