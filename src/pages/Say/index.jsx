@@ -1,31 +1,15 @@
 import React, { useState } from 'react'
-import {
-  Table,
-  Button,
-  Modal,
-  Input,
-  message,
-  Space,
-  Popconfirm,
-  Popover,
-} from 'antd'
+import { Table, Button, Modal, Input, message, Space, Popconfirm } from 'antd'
 import { _createsay, _updatesay } from '../../network/say'
 import useSay from '../../hooks/useSay'
 import { auth } from '../../network/cloudBase'
 import { _deletesay } from '../../network/say'
 import { classMinOne } from '../../network/classify'
-import {
-  ADMIN_UID,
-  VISITOR_TEXT,
-  emojiPeople,
-  emojiNature,
-  emojiObj,
-  emojiPlace,
-  emojiSymbol,
-} from '../../constants/siteInfo'
+import { ADMIN_UID, VISITOR_TEXT } from '../../constants/siteInfo'
 import dayjs from 'dayjs'
 
 import './style.css'
+import Emoji from '../../components/Emoji'
 
 const { TextArea } = Input
 
@@ -172,53 +156,7 @@ const Say = () => {
           }}
           value={sayContent}
         ></TextArea>
-        <div className="emojBox">
-          <Popover
-            className="emojiBtn"
-            overlayClassName="emojiContent"
-            placement="bottom"
-            content={emojiPeople}
-            trigger="click"
-          >
-            <Button>😄</Button>
-          </Popover>
-          <Popover
-            className="emojiBtn"
-            overlayClassName="emojiContent"
-            placement="bottom"
-            content={emojiNature}
-            trigger="click"
-          >
-            <Button>☀️</Button>
-          </Popover>
-          <Popover
-            className="emojiBtn"
-            overlayClassName="emojiContent"
-            placement="bottom"
-            content={emojiObj}
-            trigger="click"
-          >
-            <Button>🏀</Button>
-          </Popover>
-          <Popover
-            className="emojiBtn"
-            overlayClassName="emojiContent"
-            placement="bottom"
-            content={emojiPlace}
-            trigger="click"
-          >
-            <Button>⛪</Button>
-          </Popover>
-          <Popover
-            className="emojiBtn"
-            overlayClassName="emojiContent"
-            placement="bottom"
-            content={emojiSymbol}
-            trigger="click"
-          >
-            <Button>🆗</Button>
-          </Popover>
-        </div>
+        <Emoji />
       </Modal>
       <Table
         columns={columns}

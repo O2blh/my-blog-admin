@@ -1,83 +1,101 @@
 import React, { useState } from 'react'
+import { Table, Button, Modal, Input, message, Space, Popconfirm } from 'antd'
+import { useSiteLog } from '../../hooks'
 import {
-  Table,
-  Button,
-  Modal,
-  Input,
-  message,
-  Space,
-  Popconfirm,
-  Popover,
-} from 'antd'
-import { _createsay } from '../../network/say'
-import useSay from '../../hooks/useSay'
+  _createSiteLog,
+  _deleteSiteLog,
+  _updateSiteLog,
+} from '../../network/siteLog'
 import { auth } from '../../network/cloudBase'
-import { _deletesay } from '../../network/say'
-import { classMinOne } from '../../network/classify'
-import {
-  ADMIN_UID,
-  VISITOR_TEXT,
-  emojiPeople,
-  emojiNature,
-  emojiObj,
-  emojiPlace,
-  emojiSymbol,
-} from '../../constants/siteInfo'
+import { ADMIN_UID, VISITOR_TEXT } from '../../constants/siteInfo'
 import dayjs from 'dayjs'
+import Emoji from '../../components/Emoji'
 
-// import './style.css'
+import './style.css'
 
 const { TextArea } = Input
 
 const WebSiteLogs = () => {
-  const [sayList, getSayFromDB] = useSay()
+  const [siteLog, getSiteLogDB] = useSiteLog()
   const [isModalVisible, setIsModalVisible] = useState(false)
-  const [sayContent, setSayContent] = useState('')
+
+  const [content, setContent] = useState('')
+  const [logDate, setLogDate] = useState(dayjs().format('YYYY-MM-DD'))
+
   const [isEdit, setIsEdit] = useState(false)
   const [editId, setEditId] = useState(null)
 
-  const createOrUpdateSay = async () => {
-    if (editId) {
-    }
-    const res = await _createsay({
-      content: sayContent,
-      publishDate: Date.now(),
-    })
-    if (res) {
-      message.success('发布说说成功')
-    }
-  }
-
-  const deleteSay = async (id) => {
+  //创建或更新日志
+  const createOrUpdateLog = async () => {
     if (auth.currentUser.uid !== ADMIN_UID) {
       message.warning(VISITOR_TEXT)
       return
     }
-    const res = await _deletesay(id)
-    if (res) {
-      message.warning('删除成功')
-      getSayFromDB()
+
+    if (!content) {
+      message.warning('内容不可以为空哦~~~')
+      return
+    }
+
+    if (editId) {
+      const res = await _updateSiteLog(editId, {
+        content,
+        logDate,
+      })
+      if (res) {
+        message.success('更新成功')
+        getSiteLogDB()
+        cancelEditModal()
+      }
+    } else {
+      const res = await _createSiteLog({
+        content,
+        logDate,
+      })
+      if (res) {
+        message.success('创建成功')
+        getSiteLogDB()
+        cancelEditModal()
+      }
     }
   }
 
-  const createSay = (say) => {
+  const deleteLog = async (id) => {
+    if (auth.currentUser.uid !== ADMIN_UID) {
+      message.warning(VISITOR_TEXT)
+      return
+    }
+    const res = await _deleteSiteLog(id)
+    if (res) {
+      message.warning('删除成功')
+      getSiteLogDB()
+    }
+  }
+
+  //打开创建弹出
+  const openCreateModal = () => {
     setIsEdit(false)
     setEditId(null)
-    setSayContent('')
+    setContent('')
+    setLogDate(dayjs().format('YYYY-MM-DD'))
     setIsModalVisible(true)
   }
 
-  const editSay = (say) => {
+  //打开更新弹窗
+  const openEditModal = (log) => {
     setIsEdit(true)
-    setEditId(say._id)
-    setSayContent(say.content)
+    setEditId(log._id)
+    setContent(log.content)
+    setLogDate(log.logDate)
     setIsModalVisible(true)
   }
 
-  const cancelEdit = () => {
+  //关闭弹窗
+  const cancelEditModal = () => {
     setIsEdit(false)
     setEditId(null)
-    setSayContent('')
+    setContent('')
+    setLogDate('')
     setIsModalVisible(false)
   }
 
@@ -99,19 +117,14 @@ const WebSiteLogs = () => {
       key: '_id',
       render: (record) => (
         <Space size="middle">
-          <Button type="primary" onClick={() => editSay(record._id)}>
+          <Button type="primary" onClick={() => openEditModal(record)}>
             修改
           </Button>
           <Popconfirm
             placement="topRight"
             title="确定要删除该日志吗？"
             onConfirm={() => {
-              if (auth.currentUser.uid !== ADMIN_UID) {
-                message.warning(VISITOR_TEXT)
-                return
-              }
-              deleteSay(record._id)
-              classMinOne(record.classify)
+              deleteLog(record._id)
             }}
             okText="Yes"
             cancelText="No"
@@ -129,78 +142,47 @@ const WebSiteLogs = () => {
   return (
     <>
       <div className="searchBox">
-        <Button type="primary" onClick={createSay}>
+        <Button type="primary" onClick={openCreateModal}>
           记录一下
         </Button>
       </div>
       <Modal
         title={isEdit ? '修改日志' : '新增日志'}
         visible={isModalVisible}
-        centered
-        onOk={createOrUpdateSay}
-        onCancel={cancelEdit}
-        width={400}
+        onOk={createOrUpdateLog}
+        onCancel={cancelEditModal}
+        width={600}
         okText="确认"
         cancelText="取消"
       >
-        <TextArea
-          rows={5}
-          onInput={(e) => {
-            setSayContent(e.target.value)
-          }}
-          value={sayContent}
-        ></TextArea>
-        <div className="emojBox">
-          <Popover
-            className="emojiBtn"
-            overlayClassName="emojiContent"
-            placement="bottom"
-            content={emojiPeople}
-            trigger="click"
-          >
-            <Button>😄</Button>
-          </Popover>
-          <Popover
-            className="emojiBtn"
-            overlayClassName="emojiContent"
-            placement="bottom"
-            content={emojiNature}
-            trigger="click"
-          >
-            <Button>☀️</Button>
-          </Popover>
-          <Popover
-            className="emojiBtn"
-            overlayClassName="emojiContent"
-            placement="bottom"
-            content={emojiObj}
-            trigger="click"
-          >
-            <Button>🏀</Button>
-          </Popover>
-          <Popover
-            className="emojiBtn"
-            overlayClassName="emojiContent"
-            placement="bottom"
-            content={emojiPlace}
-            trigger="click"
-          >
-            <Button>⛪</Button>
-          </Popover>
-          <Popover
-            className="emojiBtn"
-            overlayClassName="emojiContent"
-            placement="bottom"
-            content={emojiSymbol}
-            trigger="click"
-          >
-            <Button>🆗</Button>
-          </Popover>
+        <div className="modalContent">
+          <div className="formItem">
+            <div className="formItemLabel">日期:</div>
+            <div className="formItemContent">
+              <Input
+                onChange={(e) => setLogDate(e.target.value)}
+                value={logDate}
+              />
+            </div>
+          </div>
+          <div className="formItem">
+            <div className="formItemLabel">内容:</div>
+            <div className="formItemContent">
+              <TextArea
+                rows={5}
+                onInput={(e) => {
+                  setContent(e.target.value)
+                }}
+                value={content}
+              ></TextArea>
+              <Emoji />
+            </div>
+          </div>
         </div>
       </Modal>
       <Table
         columns={columns}
-        dataSource={sayList}
+        dataSource={siteLog}
         pagination={{
           position: ['bottomCenter'],
           hideOnSinglePage: false,

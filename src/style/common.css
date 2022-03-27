@@ -21,3 +21,7 @@
 .ant-table-tbody .ant-table-cell {
   text-align: center;
 }
+
+.ant-modal-title {
+  font-weight: 700;
+}

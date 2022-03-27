@@ -1,0 +1,11 @@
+.emojBox {
+  margin-top: 12px;
+}
+.emojiBtn {
+  margin-right: 12px;
+}
+
+.emojiContent {
+  width: 500px;
+  word-break: break-all;
+}
