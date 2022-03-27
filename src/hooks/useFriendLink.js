@@ -1,16 +1,13 @@
 import React from 'react'
-import { db } from '../network/cloudBase'
+import { _getFriendLink } from '../network/friendLink'
 
 const { useState, useEffect } = React
 
 export default function useFriendlink() {
   const [friendLinkList, setFriendLinkList] = useState([])
   const getFriendLinkFromDB = () => {
-    db.collection('friendLink')
-      .get()
-      .then((res) => {
-        setFriendLinkList(res.data)
-      })
+    const data = _getFriendLink()
+    setFriendLinkList(data)
   }
 
   useEffect(() => {

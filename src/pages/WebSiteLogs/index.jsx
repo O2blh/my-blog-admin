@@ -83,16 +83,16 @@ const WebSiteLogs = () => {
 
   const columns = [
     {
-      title: '说说内容',
+      title: '日期',
+      dataIndex: 'logDate',
+      key: '_id',
+      render: (text) => dayjs(text).format('YYYY-MM-DD'),
+    },
+    {
+      title: '内容',
       dataIndex: 'content',
       key: '_id',
       render: (text) => <strong>{text}</strong>,
-    },
-    {
-      title: '发布日期',
-      dataIndex: 'publishDate',
-      key: '_id',
-      render: (text) => dayjs(text).format('YYYY-MM-DD HH:mm:ss'),
     },
     {
       title: '操作',
@@ -104,7 +104,7 @@ const WebSiteLogs = () => {
           </Button>
           <Popconfirm
             placement="topRight"
-            title="确定要删除该说说吗？"
+            title="确定要删除该日志吗？"
             onConfirm={() => {
               if (auth.currentUser.uid !== ADMIN_UID) {
                 message.warning(VISITOR_TEXT)
@@ -134,7 +134,7 @@ const WebSiteLogs = () => {
         </Button>
       </div>
       <Modal
-        title={isEdit ? '发布说说' : '更新说说'}
+        title={isEdit ? '修改日志' : '新增日志'}
         visible={isModalVisible}
         centered
         onOk={createOrUpdateSay}

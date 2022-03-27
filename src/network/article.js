@@ -25,7 +25,7 @@ export const _getArtilceById = async (id) => {
   return result.data
 }
 
-export const _getArtilces = async () => {
+export const _getArtilce = async () => {
   const result = await db.collection('article').get()
   return result.data
 }

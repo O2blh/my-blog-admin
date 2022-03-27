@@ -4,9 +4,9 @@ import { Table, Button, Space, Popconfirm, message, Modal, Input } from 'antd'
 import { auth } from '../../network/cloudBase'
 import { ADMIN_UID, VISITOR_TEXT } from '../../constants/siteInfo'
 import {
-  _deletefriendLink,
-  _createfriendLink,
-  _updatefriendLink,
+  _deleteFriendLink,
+  _createFriendLink,
+  _updateFriendLink,
 } from '../../network/friendLink'
 
 import './style.css'
@@ -39,7 +39,7 @@ const FriendLink = () => {
       return
     }
     if (editId) {
-      const res = await _updatefriendLink({
+      const res = await _updateFriendLink({
         name,
         link,
         avatar,
@@ -51,7 +51,7 @@ const FriendLink = () => {
         cancelEditModal()
       }
     } else {
-      const res = await _createfriendLink({
+      const res = await _createFriendLink({
         name,
         link,
         avatar,
@@ -70,7 +70,7 @@ const FriendLink = () => {
       message.warning(VISITOR_TEXT)
       return
     }
-    const res = await _deletefriendLink(id)
+    const res = await _deleteFriendLink(id)
     if (res) {
       message.warning('删除成功')
       getFriendLinkFromDB()
@@ -181,7 +181,7 @@ const FriendLink = () => {
         }}
       />
       <Modal
-        title={isEdit ? '添加友链' : '更新友链'}
+        title={isEdit ? '更新友链' : '添加友链'}
         visible={isModalVisible}
         onOk={createOrUpdateFriendLink}
         onCancel={cancelEditModal}

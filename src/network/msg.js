@@ -15,7 +15,7 @@ export const _updatemsg = async (id, msg) => {
   return res
 }
 
-export const _getmsgs = async () => {
+export const _getmsg = async () => {
   const result = await db.collection('msg').get()
   return result.data
 }

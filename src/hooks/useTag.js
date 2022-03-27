@@ -1,16 +1,13 @@
 import React from 'react'
-import { db } from '../network/cloudBase'
+import { _getAllTag } from '../network/tag'
 
 const { useState, useEffect } = React
 
 export default function useTag() {
   const [tagList, setTagList] = useState([])
-  const getTagsFromDB = () => {
-    db.collection('tag')
-      .get()
-      .then((res) => {
-        setTagList(res.data)
-      })
+  const getTagsFromDB = async () => {
+    const data = await _getAllTag()
+    setTagList(data)
   }
 
   useEffect(() => {

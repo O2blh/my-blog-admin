@@ -156,7 +156,7 @@ const Say = () => {
         </Button>
       </div>
       <Modal
-        title={isEdit ? '发布说说' : '更新说说'}
+        title={isEdit ? '更新说说' : '发布说说'}
         visible={isModalVisible}
         centered
         onOk={createOrUpdateSay}

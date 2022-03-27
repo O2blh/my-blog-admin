@@ -15,7 +15,7 @@ export const _updateTag = async (id, tag) => {
   return res
 }
 
-export const _getTags = async () => {
+export const _getAllTag = async () => {
   const result = await db.collection('tag').get()
   return result.data
 }

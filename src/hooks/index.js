@@ -1,4 +1,4 @@
-export { default as useArticles } from './useArticles'
+export { default as useArticle } from './useArticle'
 export { default as useClassify } from './useClassify'
 export { default as usePoem } from './usePoem'
 export { default as useMsg } from './useMsg'
