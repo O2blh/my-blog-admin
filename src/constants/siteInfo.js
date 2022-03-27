@@ -1,6 +1,6 @@
 export const ENV_ID = 'baozou-9gomwm0c699bd223' //cloudBase env-id
 
-export const SITE_NAME = '猪猪的后山' //网站的名字
+export const SITE_NAME = '伊之助的后山' //网站的名字
 
 export const BLOG_URL = '' //博客地址
 

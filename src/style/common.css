@@ -5,3 +5,18 @@
   padding: 0 5px;
   background-color: #b9dfff;
 }
+
+.searchBox button {
+  height: 40px;
+}
+
+/* ————————————————————————————表格区———————————————————————————————— */
+.ant-table-thead .ant-table-cell {
+  text-align: center;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.ant-table-tbody .ant-table-cell {
+  text-align: center;
+}
