@@ -1,27 +1,113 @@
-import React from 'react'
-import useMsg from '../../hooks/useMsg'
-import dayjs from 'dayjs'
-import { Table, Button, Tag, Space, Popconfirm, message } from 'antd'
+import React, { useState } from 'react'
+import { useFriendLink } from '../../hooks'
+import { Table, Button, Space, Popconfirm, message, Modal, Input } from 'antd'
 import { auth } from '../../network/cloudBase'
 import { ADMIN_UID, VISITOR_TEXT } from '../../constants/siteInfo'
-import { _deletemsg } from '../../network/msg'
+import {
+  _deletefriendLink,
+  _createfriendLink,
+  _updatefriendLink,
+} from '../../network/friendLink'
+
+import './style.css'
 
 const FriendLink = () => {
-  const [msgList, getMsgFromDB] = useMsg()
+  const [isModalVisible, setIsModalVisible] = useState(false)
+  const [friendLinkList, getFriendLinkFromDB] = useFriendLink([])
+  const [isEdit, setIsEdit] = useState(false)
+  const [editId, setEditId] = useState('')
+  const [name, setName] = useState('')
+  const [link, setLink] = useState('')
+  const [avatar, setAvatar] = useState('')
+  const [desc, setDesc] = useState('')
 
-  const createFriendLink = () => {}
-
-  const showMsg = (id) => {}
-  const deleteMsg = async (id) => {
+  const createOrUpdateFriendLink = async () => {
     if (auth.currentUser.uid !== ADMIN_UID) {
       message.warning(VISITOR_TEXT)
       return
     }
-    const res = await _deletemsg(id)
+    if (!name) {
+      message.warning('姓名不能为空!')
+      return
+    }
+    if (!link) {
+      message.warning('链接不能为空!')
+      return
+    }
+    if (!avatar) {
+      message.warning('头像不能为空!')
+      return
+    }
+    if (editId) {
+      const res = await _updatefriendLink({
+        name,
+        link,
+        avatar,
+        desc,
+      })
+      if (res) {
+        message.success('更新成功!')
+        getFriendLinkFromDB()
+        cancelEditModal()
+      }
+    } else {
+      const res = await _createfriendLink({
+        name,
+        link,
+        avatar,
+        desc,
+      })
+      if (res) {
+        message.success('创建成功!')
+        getFriendLinkFromDB()
+        cancelEditModal()
+      }
+    }
+  }
+
+  const deletefriendLInk = async (id) => {
+    if (auth.currentUser.uid !== ADMIN_UID) {
+      message.warning(VISITOR_TEXT)
+      return
+    }
+    const res = await _deletefriendLink(id)
     if (res) {
       message.warning('删除成功')
-      getMsgFromDB()
+      getFriendLinkFromDB()
     }
+  }
+
+  const openCreateModal = () => {
+    setCreateState()
+    setIsModalVisible(true)
+  }
+
+  const openEditModal = (friendLink) => {
+    setEditState(friendLink)
+    setIsModalVisible(true)
+  }
+
+  const cancelEditModal = () => {
+    setCreateState()
+    setIsModalVisible(false)
+  }
+
+  const setCreateState = () => {
+    setIsEdit(false)
+    setEditId('')
+    setName('')
+    setLink('')
+    setAvatar('')
+    setDesc('')
+  }
+
+  const setEditState = (friendLink) => {
+    setIsEdit(false)
+    setEditId(friendLink._id)
+    setName(friendLink.name)
+    setLink(friendLink.link)
+    setAvatar(friendLink.avatar)
+    setDesc(friendLink.desc)
   }
 
   const columns = [
@@ -56,18 +142,14 @@ const FriendLink = () => {
       key: '_id',
       render: (record) => (
         <Space size="middle">
-          <Button type="primary" onClick={() => showMsg(record._id)}>
+          <Button type="primary" onClick={() => openEditModal(record)}>
             修改
           </Button>
           <Popconfirm
             placement="topRight"
             title="确定要删除该友链吗？"
             onConfirm={() => {
-              if (auth.currentUser.uid !== ADMIN_UID) {
-                message.warning(VISITOR_TEXT)
-                return
-              }
-              deleteMsg(record._id)
+              deletefriendLInk(record._id)
             }}
             okText="Yes"
             cancelText="No"
@@ -85,19 +167,58 @@ const FriendLink = () => {
   return (
     <>
       <div className="searchBox">
-        <Button type="primary" onClick={createFriendLink}>
+        <Button type="primary" onClick={openCreateModal}>
           添加友链
         </Button>
       </div>
       <Table
         columns={columns}
-        dataSource={msgList}
+        dataSource={friendLinkList}
         pagination={{
           position: ['bottomCenter'],
           hideOnSinglePage: false,
           showQuickJumper: true,
         }}
       />
+      <Modal
+        title={isEdit ? '添加友链' : '更新友链'}
+        visible={isModalVisible}
+        onOk={createOrUpdateFriendLink}
+        onCancel={cancelEditModal}
+        width={500}
+        okText="确认"
+        cancelText="取消"
+      >
+        <div className="friendLinkModal">
+          <div className="formItem">
+            <div className="formItemLabel">Name:</div>
+            <div className="formItemContent">
+              <Input onChange={(e) => setName(e.target.value)} value={name} />
+            </div>
+          </div>
+          <div className="formItem">
+            <div className="formItemLabel">Link:</div>
+            <div className="formItemContent">
+              <Input onChange={(e) => setLink(e.target.value)} value={link} />
+            </div>
+          </div>
+          <div className="formItem">
+            <div className="formItemLabel">Avatar:</div>
+            <div className="formItemContent">
+              <Input
+                onChange={(e) => setAvatar(e.target.value)}
+                value={avatar}
+              />
+            </div>
+          </div>
+          <div className="formItem">
+            <div className="formItemLabel">Desc:</div>
+            <div className="formItemContent">
+              <Input onChange={(e) => setDesc(e.target.value)} value={desc} />
+            </div>
+          </div>
+        </div>
+      </Modal>
     </>
   )
 }

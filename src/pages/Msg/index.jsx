@@ -9,7 +9,10 @@ import { _deletemsg } from '../../network/msg'
 const Msg = () => {
   const [msgList, getMsgFromDB] = useMsg()
 
-  const showMsg = (id) => {}
+  const showMsg = (msg) => {
+    // window.open(msg.url, '_blank')
+  }
+
   const deleteMsg = async (id) => {
     if (auth.currentUser.uid !== ADMIN_UID) {
       message.warning(VISITOR_TEXT)
@@ -24,46 +27,18 @@ const Msg = () => {
 
   const columns = [
     {
-      title: '标题',
-      dataIndex: 'articleTitle',
+      title: '昵称',
+      dataIndex: 'nickName',
       key: '_id',
       render: (text) => <strong>{text}</strong>,
     },
     {
-      title: '发布日期',
-      dataIndex: 'publishDate',
+      title: '联系邮箱',
+      dataIndex: 'email',
       key: '_id',
-      render: (text) => dayjs(text).format('YYYY-MM-DD HH:mm:ss'),
     },
     {
-      title: '分类',
-      dataIndex: 'classify',
-      key: '_id',
-      render: (text) => (
-        <>
-          <Tag color="#2db7f5">{text}</Tag>
-        </>
-      ),
-    },
-    {
-      title: 'Tags',
-      key: '_id',
-      dataIndex: 'tags',
-      render: (tags) => (
-        <>
-          {tags.map((tag) => {
-            let color = tag.length > 5 ? 'geekblue' : 'green'
-            return (
-              <Tag color={color} key={tag}>
-                {tag}
-              </Tag>
-            )
-          })}
-        </>
-      ),
-    },
-    {
-      title: 'URL',
+      title: '网址',
       dataIndex: 'url',
       key: '_id',
       render: (text) => (
@@ -73,11 +48,27 @@ const Msg = () => {
       ),
     },
     {
+      title: '日期',
+      dataIndex: 'publishDate',
+      key: '_id',
+      render: (text) => dayjs(text).format('YYYY-MM-DD hh:mm:ss'),
+    },
+    {
+      title: '类型',
+      dataIndex: 'msgType',
+      key: '_id',
+    },
+    {
+      title: '内容',
+      dataIndex: 'content',
+      key: '_id',
+    },
+    {
       title: '操作',
       key: '_id',
       render: (record) => (
         <Space size="middle">
-          <Button type="primary" onClick={() => showMsg(record._id)}>
+          <Button type="primary" onClick={() => showMsg(record)}>
             查看
           </Button>
           <Popconfirm

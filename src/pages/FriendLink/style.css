@@ -5,3 +5,9 @@
   padding: 0 5px;
   background-color: #b9dfff;
 }
+
+.friendLinkModal .formItemLabel {
+  width: 50px;
+  font-size: 16px;
+  user-select: none;
+}
