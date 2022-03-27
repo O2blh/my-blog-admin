@@ -5,8 +5,8 @@ const { useState, useEffect } = React
 
 export default function useClassify() {
   const [classify, setClassify] = useState([])
-  const getClassifyFromDB = () => {
-    const data = _getClassifies()
+  const getClassifyFromDB = async () => {
+    const data = await _getClassifies()
     setClassify(data)
   }
   useEffect(() => {

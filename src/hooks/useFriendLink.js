@@ -5,8 +5,8 @@ const { useState, useEffect } = React
 
 export default function useFriendlink() {
   const [friendLinkList, setFriendLinkList] = useState([])
-  const getFriendLinkFromDB = () => {
-    const data = _getFriendLink()
+  const getFriendLinkFromDB = async () => {
+    const data = await _getFriendLink()
     setFriendLinkList(data)
   }
 

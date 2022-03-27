@@ -5,8 +5,8 @@ const { useState, useEffect } = React
 
 export default function useGallery() {
   const [gallery, setGallery] = useState([])
-  const getGalleryFromDB = () => {
-    const data = _getGallery()
+  const getGalleryFromDB = async () => {
+    const data = await _getGallery()
     setGallery(data)
   }
 
