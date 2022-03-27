@@ -7,7 +7,7 @@ export default function useSay() {
   const [sayList, setSayList] = useState([])
   const getSayFromDB = async () => {
     const res = await _getsays()
-    setSayList(res.data)
+    setSayList(res)
   }
 
   useEffect(() => {

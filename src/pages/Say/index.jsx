@@ -9,7 +9,7 @@ import {
   Popconfirm,
   Popover,
 } from 'antd'
-import { _createsay } from '../../network/say'
+import { _createsay, _updatesay } from '../../network/say'
 import useSay from '../../hooks/useSay'
 import { auth } from '../../network/cloudBase'
 import { _deletesay } from '../../network/say'
@@ -36,18 +36,37 @@ const Say = () => {
   const [isEdit, setIsEdit] = useState(false)
   const [editId, setEditId] = useState(null)
 
+  //创建或更新说说
   const createOrUpdateSay = async () => {
-    if (editId) {
+    if (auth.currentUser.uid !== ADMIN_UID) {
+      message.warning(VISITOR_TEXT)
+      return
     }
-    const res = await _createsay({
-      content: sayContent,
-      publishDate: Date.now(),
-    })
-    if (res) {
-      message.success('发布说说成功')
+    if (editId) {
+      const res = await _updatesay(editId, {
+        content: sayContent,
+        updateDate: Date.now(),
+      })
+      if (res) {
+        message.success('更新说说成功')
+        getSayFromDB()
+        cancelEditSayModal()
+      }
+    } else {
+      const res = await _createsay({
+        content: sayContent,
+        publishDate: Date.now(),
+        updateDate: Date.now(),
+      })
+      if (res) {
+        message.success('发布说说成功')
+        getSayFromDB()
+        cancelEditSayModal()
+      }
     }
   }
 
+  //删除说说
   const deleteSay = async (id) => {
     if (auth.currentUser.uid !== ADMIN_UID) {
       message.warning(VISITOR_TEXT)
@@ -55,26 +74,30 @@ const Say = () => {
     }
     const res = await _deletesay(id)
     if (res) {
-      message.warning('删除成功')
+      message.warning('删除说说成功')
       getSayFromDB()
     }
   }
 
-  const createSay = (say) => {
+  //打开创建说说弹出
+  const openCreateSayModal = () => {
     setIsEdit(false)
     setEditId(null)
     setSayContent('')
     setIsModalVisible(true)
   }
 
-  const editSay = (say) => {
+  //打开更新说说弹窗
+  const openEditSayModal = (say) => {
+    console.log(say)
     setIsEdit(true)
     setEditId(say._id)
     setSayContent(say.content)
     setIsModalVisible(true)
   }
 
-  const cancelEdit = () => {
+  //关闭说说弹窗
+  const cancelEditSayModal = () => {
     setIsEdit(false)
     setEditId(null)
     setSayContent('')
@@ -86,7 +109,6 @@ const Say = () => {
       title: '说说内容',
       dataIndex: 'content',
       key: '_id',
-      render: (text) => <strong>{text}</strong>,
     },
     {
       title: '发布日期',
@@ -99,7 +121,7 @@ const Say = () => {
       key: '_id',
       render: (record) => (
         <Space size="middle">
-          <Button type="primary" onClick={() => editSay(record._id)}>
+          <Button type="primary" onClick={() => openEditSayModal(record)}>
             修改
           </Button>
           <Popconfirm
@@ -129,8 +151,8 @@ const Say = () => {
   return (
     <>
       <div className="searchBox">
-        <Button type="primary" onClick={createSay}>
-          新建
+        <Button type="primary" onClick={openCreateSayModal}>
+          发布说说
         </Button>
       </div>
       <Modal
@@ -138,7 +160,7 @@ const Say = () => {
         visible={isModalVisible}
         centered
         onOk={createOrUpdateSay}
-        onCancel={cancelEdit}
+        onCancel={cancelEditSayModal}
         width={400}
         okText="确认"
         cancelText="取消"
