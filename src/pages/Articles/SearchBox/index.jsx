@@ -62,7 +62,7 @@ const SearchBox = ({ articles, setArtilesShow, classifies, tags }) => {
   }
   return (
     <div className="searchBox">
-      <Button type="primary" className="addArticleBtn" onClick={turnToAddPage}>
+      <Button type="primary" onClick={turnToAddPage}>
         写文章
       </Button>
       <input

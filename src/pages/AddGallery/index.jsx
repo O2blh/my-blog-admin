@@ -146,18 +146,13 @@ const AddGallery = () => {
       <div className="searchBox">
         <Button
           type="primary"
-          style={{ marginRight: '8px' }}
           onClick={() => {
             history.push(ROUTES.GALLERY)
           }}
         >
           返回
         </Button>
-        <Button
-          type="primary"
-          style={{ marginRight: '8px' }}
-          onClick={createOrUpdateGallery}
-        >
+        <Button type="primary" onClick={createOrUpdateGallery}>
           {isEdit ? '更新' : '添加'}
         </Button>
         {isEdit && (
