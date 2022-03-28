@@ -189,7 +189,7 @@ const FriendLink = () => {
         okText="确认"
         cancelText="取消"
       >
-        <div className="friendLinkModal">
+        <div className="modalContent">
           <div className="formItem">
             <div className="formItemLabel">Name:</div>
             <div className="formItemContent">

@@ -11,6 +11,13 @@
   margin-right: 5px;
 }
 
+.modalContent .formItemLabel {
+  width: 40px;
+  font-size: 16px;
+  user-select: none;
+  font-weight: 700;
+}
+
 /* ————————————————————————————表格区———————————————————————————————— */
 .ant-table-thead .ant-table-cell {
   text-align: center;

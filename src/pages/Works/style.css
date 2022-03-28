@@ -1,0 +1,80 @@
+.worksList {
+  flex: 1 1 auto;
+  background-color: #c8f3fd;
+}
+
+.worksItem {
+  position: relative;
+  width: 400px;
+  height: 300px;
+  background-size: cover;
+  padding: 40px;
+  margin-left: 20px;
+  margin-top: 20px;
+}
+.worksName {
+  display: block;
+  font-size: 32px;
+  height: 50px;
+  line-height: 50px;
+  font-weight: 700;
+  color: white;
+  cursor: pointer;
+  margin-bottom: 4px;
+}
+
+.worksDesc {
+  display: none;
+  border-top: 4px solid #fff;
+  color: white;
+  font-size: 24px;
+  line-height: 40px;
+  transition: all 0.2s;
+}
+.worksItem:hover .worksDesc,
+.worksItem:hover .exposeMask,
+.worksItem:hover .oprBtn {
+  display: block;
+}
+
+.worksName:hover {
+  color: #1890ff;
+}
+.worksOrder {
+  position: absolute;
+  left: 8px;
+  bottom: 0;
+  color: #ccc;
+  font-size: 22px;
+}
+
+.oprBtn {
+  display: none;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  cursor: pointer;
+  z-index: 10;
+  color: white;
+  font-size: 24px;
+  transition: all 0.2s;
+}
+.oprBtn span {
+  margin-right: 8px;
+}
+.anticon-form:hover {
+  color: #1890ff;
+}
+.anticon-delete:hover {
+  color: red;
+}
+
+.exposeMask {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.3);
+  transition: all 0.2s;
+}
