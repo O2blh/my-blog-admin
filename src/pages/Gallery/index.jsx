@@ -30,6 +30,7 @@ const Gallery = () => {
           {gallery.map((item) => {
             return (
               <div
+                key={item._id}
                 className="picItemBox"
                 onClick={() => {
                   turnToCreatePage(item._id)

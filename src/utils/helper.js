@@ -30,3 +30,15 @@ export const parshQueryString = (search) => {
     })
   return obj
 }
+
+export const debounce = (fn, delay) => {
+  let timer = null
+  return function () {
+    clearTimeout(timer)
+    let context = this
+    let args = arguments
+    timer = setTimeout(() => {
+      fn.apply(context, args)
+    }, delay)
+  }
+}

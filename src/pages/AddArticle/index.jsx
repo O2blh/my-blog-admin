@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from 'react'
+import React, { useRef, useState, useEffect, useMemo } from 'react'
 import { useLocation, useHistory } from 'react-router-dom'
 import ROUTES from '../../constants/routes'
 import useClickAway from '../../hooks/useClickAway'
@@ -9,12 +9,20 @@ import {
   _createArtilce,
   _getArtilceById,
 } from '../../network/article'
+import {
+  _createDrafts,
+  _deleteDrafts,
+  _getDraftById,
+  _updateDrafts,
+} from '../../network/drafts'
 import { classMinOne, classPlusOne } from '../../network/classify'
 import { ADMIN_UID, VISITOR_TEXT } from '../../constants/siteInfo'
 import { useClassify, useTag } from '../../hooks'
-import { parshQueryString } from '../../utils/helper'
+import useUrlState from '@ahooksjs/use-url-state'
+import { parshQueryString, debounce } from '../../utils/helper'
 import { marked } from 'marked'
 import hljs from 'highlight.js'
+// import 'highlight.js/styles/github.css'
 import './github-dark.css'
 import './style.css'
 const { TextArea } = Input
@@ -23,7 +31,9 @@ const { Option } = Select
 const AddArticle = () => {
   const location = useLocation()
   const history = useHistory()
-  const queryObj = parshQueryString(location.search)
+  const queryObj = useMemo(() => {
+    return parshQueryString(location.search)
+  }, [location.search])
 
   const [articleId, setArticleId] = useState('') // 文章id
   const [articleTitle, setArticleTitle] = useState('') // 文章标题
@@ -34,37 +44,70 @@ const AddArticle = () => {
   const [classify, setClassify] = useState('') // 文章分类
   const [abstract, setAbstract] = useState('') // 文章概要
   const [abstractLength, setAbstractLength] = useState(0)
+  const [defaultClassify, setDefaultClassify] = useState('') //原先的文章分类
 
-  const [defaultClassify, setDefaultClassify] = useState('')
+  const [draftId, setDraftId] = useState('') //草稿id
 
-  const getArticleById = async () => {
-    if (queryObj.articleId) {
-      const res = await _getArtilceById(queryObj.articleId)
-      console.log(res)
-      if (!res || res.length === 0) {
-        message.warning('文章不存在')
-        setTimeout(() => {
-          history.push(ROUTES.ARTICLES)
-        }, 1000)
-        return
-      }
-      const data = res[0]
-      setArticleId(data._id)
-      setArticleTitle(data.articleTitle)
-      setArticleContent(data.articleContent)
-      setMarkdownContent(data.articleContent)
-      setClassify(data.classify)
-      setDefaultClassify(data.classify)
-      setTags(data.tags)
-      setAbstract(data.abstract)
-      setAbstractLength(data.abstract.length)
+  const [urlState, setUrlState] = useUrlState(queryObj)
+  console.log(urlState)
+  //文章分类数据
+  const [classifies] = useClassify()
+  //文章标签数据
+  const [tagList] = useTag()
+
+  //自动保存提示信息
+  const [autoSaveMsg, setAutoSaveMsg] = useState('文章将自动保存至草稿箱')
+
+  const getArticleById = async (articleId) => {
+    const res = await _getArtilceById(articleId)
+    if (!res || res.length === 0) {
+      message.warning('文章不存在')
+      setTimeout(() => {
+        history.push(ROUTES.ARTICLES)
+      }, 1000)
+      return
     }
+    const data = res[0]
+    setArticleId(data._id)
+    setArticleTitle(data.articleTitle)
+    setArticleContent(data.articleContent)
+    setMarkdownContent(data.articleContent)
+    setClassify(data.classify)
+    setDefaultClassify(data.classify)
+    setTags(data.tags)
+    setAbstract(data.abstract)
+    setAbstractLength(data.abstract.length)
+  }
+
+  const getDraftById = async (draftId) => {
+    const res = await _getDraftById(draftId)
+    if (!res || res.length === 0) {
+      message.warning('文章不存在')
+      setTimeout(() => {
+        history.push(ROUTES.ARTICLES)
+      }, 1000)
+      return
+    }
+    const data = res[0]
+    setArticleId(data._id)
+    setArticleTitle(data.articleTitle)
+    setArticleContent(data.articleContent)
+    setMarkdownContent(data.articleContent)
+    setClassify(data.classify)
+    setDefaultClassify(data.classify)
+    setTags(data.tags)
+    setAbstract(data.abstract)
+    setAbstractLength(data.abstract.length)
   }
 
   useEffect(() => {
-    getArticleById()
+    if (urlState.articleId) {
+      getArticleById(urlState.articleId)
+    }
+    if (urlState.draftId) {
+      getDraftById(urlState.draftId)
+    }
   }, [])
-
   // 配置highlight
   hljs.configure({
     tabReplace: '',
@@ -82,14 +125,20 @@ const AddArticle = () => {
   marked.setOptions({
     renderer: new marked.Renderer(),
     highlight: (code) => hljs.highlightAuto(code).value,
-    gfm: true, //默认为true。 允许 Git Hub标准的markdown.
-    tables: true, //默认为true。 允许支持表格语法。该选项要求 gfm 为true。
-    breaks: true, //默认为false。 允许回车换行。该选项要求 gfm 为true。
+    pedantic: false,
+    gfm: true,
+    tables: true,
+    breaks: false,
+    sanitize: false,
+    smartLists: true,
+    smartypants: false,
+    xhtml: false,
   })
 
   // 显示发布弹框
   const [isShowPublishBox, setIsShowPublishBox] = useState(false)
   const publishBoxRef = useRef()
+  //在发布弹框以外点击，隐藏发布框
   useClickAway(publishBoxRef, (event) => {
     //使用antd的Select下拉框会在body下挂载一个dropdown元素，点击dropdown时，这个事件不是从内部触发，这会导致隐藏发布文章的合资，判断一下事件来源是不是从生成的dropdown内部传出来的，如果是，不做任何操作
     if (!document.getElementById('root').contains(event.target)) {
@@ -98,11 +147,7 @@ const AddArticle = () => {
     setIsShowPublishBox(false)
   })
 
-  //文章分类数据
-  const [classifies] = useClassify()
-  //文章标签数据
-  const [tagList] = useTag()
-
+  //创建或更新文章
   const createOrUpdateArticle = async () => {
     if (!articleTitle) {
       message.info('请输入文章标题！')
@@ -152,13 +197,69 @@ const AddArticle = () => {
         abstract,
       })
       if (res) {
-        classPlusOne(classify)
         message.success('发布成功!')
+        classPlusOne(classify)
+        if (draftId) {
+          _deleteDrafts(draftId)
+        }
         setTimeout(() => {
           history.push(ROUTES.ARTICLES)
         }, 1000)
       }
     }
+  }
+
+  //保存文章到草稿箱
+  const saveArticleToDrafts = async (draftId, article) => {
+    if (draftId) {
+      const res = await _updateDrafts(draftId, {
+        ...article,
+        modifyDate: Date.now(),
+      })
+      if (res) {
+        changeAutoSaveMsg()
+      }
+    } else {
+      const res = await _createDrafts({
+        ...article,
+        modifyDate: Date.now(),
+      })
+      if (res) {
+        setDraftId(res.id)
+        setUrlState({
+          ...urlState,
+          draftId: res.id,
+        })
+        changeAutoSaveMsg()
+      }
+    }
+  }
+
+  //使用useMemo保证保证每次获取的都是防抖之后的函数
+  const debounceSaveArticleToDrafts = useMemo(
+    () => debounce(saveArticleToDrafts, 1000),
+    []
+  )
+
+  //当内容改变后，使用副作用将内容自动保存到草稿箱
+  useEffect(() => {
+    if (!articleTitle && !articleContent) {
+      return
+    }
+    debounceSaveArticleToDrafts(draftId, {
+      articleTitle,
+      articleContent,
+      tags,
+      classify,
+      abstract,
+    })
+  }, [draftId, articleTitle, articleContent, tags, classify, abstract])
+
+  const changeAutoSaveMsg = () => {
+    setAutoSaveMsg('保存成功')
+    setTimeout(() => {
+      setAutoSaveMsg('文章将自动保存至草稿箱')
+    }, 2000)
   }
 
   return (
@@ -171,7 +272,7 @@ const AddArticle = () => {
           placeholder="请输入文章标题..."
         />
         <div className="rightBox">
-          {/* <div className=''>文章将自动保存至草稿箱</div> */}
+          <div className="tooltip">{autoSaveMsg}</div>
           <button
             className="commonBtn draftsBtn"
             onClick={() => history.push(ROUTES.DRAFTS)}
@@ -180,7 +281,7 @@ const AddArticle = () => {
           </button>
           <div className="publishBox">
             <button
-              className="primaryBtn publishBtn"
+              className="primaryBtn"
               onClick={() => {
                 setIsShowPublishBox(!isShowPublishBox)
               }}
@@ -199,7 +300,9 @@ const AddArticle = () => {
                   <Select
                     allowClear
                     placeholder="请选择文章分类"
-                    onChange={(value) => setClassify(value)}
+                    onChange={(value) => {
+                      setClassify(value)
+                    }}
                     value={classify}
                   >
                     {classifies.map((item) => {
@@ -219,7 +322,9 @@ const AddArticle = () => {
                     mode="tags"
                     allowClear
                     placeholder="请选择文章标签"
-                    onChange={(value) => setTags(value)}
+                    onChange={(value) => {
+                      setTags(value)
+                    }}
                     value={tags}
                   >
                     {tagList.map((item) => {
@@ -279,7 +384,6 @@ const AddArticle = () => {
         <TextArea
           className="inputRegion"
           onChange={(e) => {
-            console.log(e.target.value)
             setArticleContent(e.target.value)
             const mkd = marked(e.target.value)
             setMarkdownContent(mkd)
@@ -287,7 +391,7 @@ const AddArticle = () => {
           value={articleContent}
         ></TextArea>
         <div
-          className="showRegion"
+          className="showRegion markdownStyle"
           dangerouslySetInnerHTML={{
             __html: markdownContent.replace(/<pre>/g, "<pre id='hljs'>"),
           }}

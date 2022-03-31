@@ -1,4 +1,4 @@
-import { Button, Modal, message, Input } from 'antd'
+import { Button, Modal, message, Input, Popconfirm } from 'antd'
 import React, { useState } from 'react'
 import { useWorks } from '../../hooks'
 import { auth } from '../../network/cloudBase'
@@ -156,8 +156,15 @@ const Works = () => {
                     openEditModal(works)
                   }}
                 />
-
-                <DeleteOutlined />
+                <Popconfirm
+                  placement="topRight"
+                  title="确定要删除该作品吗?"
+                  onConfirm={() => deleteWorks(works._id)}
+                  okText="Yes"
+                  cancelText="No"
+                >
+                  <DeleteOutlined />
+                </Popconfirm>
               </div>
               <div className="exposeMask"></div>
             </div>

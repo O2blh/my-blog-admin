@@ -54,7 +54,7 @@ const Sidebar = () => {
   return (
     <div className="NavBox">
       <div className="siteName">{SITE_NAME}</div>
-      <ul className="savWrapper">
+      <ul className="navWrapper">
         {NAVS.map((nav, index) => {
           const isActive = pathname.startsWith(nav.route)
           return (
