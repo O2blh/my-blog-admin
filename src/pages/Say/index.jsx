@@ -73,7 +73,6 @@ const Say = () => {
 
   //打开更新说说弹窗
   const openEditSayModal = (say) => {
-    console.log(say)
     setIsEdit(true)
     setEditId(say._id)
     setSayContent(say.content)

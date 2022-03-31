@@ -34,9 +34,7 @@ const AddGallery = () => {
 
   const getGalleryById = async () => {
     if (queryObj.id) {
-      console.log(queryObj.id)
       const res = await _getGalleryById(queryObj.id)
-      console.log(res)
       if (res && res.length > 0) {
         const data = res[0]
         setIsEdit(true)

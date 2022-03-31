@@ -22,7 +22,6 @@ export const _getClassifies = async () => {
 
 // 相应分类数目-1
 export const classMinOne = async (oldClass) => {
-  console.log(oldClass)
   const res = await db
     .collection('classify')
     .where({ classify: oldClass })

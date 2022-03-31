@@ -5,7 +5,7 @@ export default function useDrafts() {
   const [drafts, setDrafts] = useState([])
   const getDraftsFromDb = async () => {
     const res = await _getAllDrafts()
-    setDrafts(res.data)
+    setDrafts(res)
   }
   useEffect(() => {
     getDraftsFromDb()

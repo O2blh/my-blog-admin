@@ -4,30 +4,41 @@ import { useDrafts } from '../../hooks'
 import dayjs from 'dayjs'
 import { auth } from '../../network/cloudBase'
 import { ADMIN_UID, VISITOR_TEXT } from '../../constants/siteInfo'
+import { useHistory } from 'react-router-dom'
+import ROUTES from '../../constants/routes'
+import { _deleteDrafts } from '../../network/drafts'
 
 const Drafts = () => {
   const [drafts, getDraftsFromDb] = useDrafts()
+  const history = useHistory()
+  const editArticle = (id) => {
+    history.push(`${ROUTES.ADD_ARTICLE}?draftId=${id}`)
+  }
 
-  const editArticle = () => {}
-
-  const deleteArticle = () => {}
+  const deleteArticle = async (id) => {
+    const res = await _deleteDrafts(id)
+    if (res) {
+      message.success('删除成功')
+      getDraftsFromDb()
+    }
+  }
 
   const columns = [
     {
       title: '标题',
-      dataIndex: 'title',
+      dataIndex: 'articleTitle',
       key: '_id',
       render: (text) => <strong>{text}</strong>,
     },
     {
       title: '保存日期',
-      dataIndex: 'saveDate',
+      dataIndex: 'modifyDate',
       key: '_id',
       render: (text) => dayjs(text).format('YYYY-MM-DD hh:mm:ss'),
     },
     {
       title: '分类',
-      dataIndex: 'ckassify',
+      dataIndex: 'classify',
       key: '_id',
       render: (text) => <Tag color="#2db7f5">{text}</Tag>,
     },
@@ -50,7 +61,7 @@ const Drafts = () => {
     },
     {
       title: 'URL',
-      dataIndex: 'title',
+      dataIndex: 'url',
       key: '_id',
       render: (text) => <strong>{text}</strong>,
     },
@@ -64,7 +75,7 @@ const Drafts = () => {
           </Button>
           <Popconfirm
             placement="topRight"
-            title="确定要删除该文章吗？"
+            title="确定要删除该草稿吗？"
             onConfirm={() => {
               if (auth.currentUser.uid !== ADMIN_UID) {
                 message.warning(VISITOR_TEXT)
@@ -86,7 +97,15 @@ const Drafts = () => {
   ]
   return (
     <>
-      <Table dataSource={drafts} columns={columns} />
+      <Table
+        columns={columns}
+        dataSource={drafts}
+        pagination={{
+          position: ['bottomCenter'],
+          hideOnSinglePage: false,
+          showQuickJumper: true,
+        }}
+      />
     </>
   )
 }

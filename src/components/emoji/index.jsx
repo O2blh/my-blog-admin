@@ -11,10 +11,7 @@ import {
 import './style.css'
 
 const Emoji = () => {
-  const emojiClick = (e) => {
-    console.log(e.target.innerText)
-  }
-  console.log(emojiPeople)
+  const emojiClick = (e) => {}
   const wrapEmojiPeople = wrapEmoji(emojiPeople).map((emoji) => {
     return <span onClick={emojiClick}>{emoji}</span>
   })

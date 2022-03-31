@@ -35,7 +35,9 @@ const AddArticle = () => {
     return parshQueryString(location.search)
   }, [location.search])
 
-  const [articleId, setArticleId] = useState('') // 文章id
+  const [urlState, setUrlState] = useUrlState(queryObj)
+
+  const [articleId, setArticleId] = useState(urlState.articleId) // 文章id
   const [articleTitle, setArticleTitle] = useState('') // 文章标题
   const [articleContent, setArticleContent] = useState('') // 文章内容
   const [markdownContent, setMarkdownContent] = useState('') // markdown显示内容
@@ -46,10 +48,8 @@ const AddArticle = () => {
   const [abstractLength, setAbstractLength] = useState(0)
   const [defaultClassify, setDefaultClassify] = useState('') //原先的文章分类
 
-  const [draftId, setDraftId] = useState('') //草稿id
+  const [draftId, setDraftId] = useState(urlState.draftId) //草稿id
 
-  const [urlState, setUrlState] = useUrlState(queryObj)
-  console.log(urlState)
   //文章分类数据
   const [classifies] = useClassify()
   //文章标签数据
@@ -108,6 +108,7 @@ const AddArticle = () => {
       getDraftById(urlState.draftId)
     }
   }, [])
+
   // 配置highlight
   hljs.configure({
     tabReplace: '',

@@ -15,7 +15,6 @@ export const isContained = (a, b) => {
 }
 
 export const parshQueryString = (search) => {
-  console.log(search)
   if (!search) {
     return {}
   }
