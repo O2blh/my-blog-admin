@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
 import { auth } from '../../../network/cloudBase'
 import { useDispatch } from 'react-redux'
-import { login } from '../../../redux/actions'
 import { VISITOR_EMAIL, VISITOR_PWD } from '../../../constants/siteInfo'
 import { reqSvgs } from '../../../utils/helper'
+import { ACTIONS } from '../../../redux/reducers/loginState'
 
 import './style.css'
 const LoginBox = () => {
@@ -16,8 +16,11 @@ const LoginBox = () => {
   const handleLogin = (isVistor) => {
     const user = isVistor ? VISITOR_EMAIL : email
     const password = isVistor ? VISITOR_PWD : pwd
-    auth.signInWithEmailAndPassword(user, password).then(() => {
-      dispatch(login(true))
+    auth.signInWithEmailAndPassword(user, password).then((loginState) => {
+      dispatch({
+        type: ACTIONS.LOGIN,
+        payload: loginState.user,
+      })
     })
   }
   return (

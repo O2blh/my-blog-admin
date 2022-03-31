@@ -1,13 +1,32 @@
-import { LOGIN } from "../constants";
-import { ENV_ID } from "../../constants/siteInfo";
-const initState = localStorage.getItem(`user_info_${ENV_ID}`) ? true : false;
+import { sessionLocalStorage } from '../../utils/session'
+
+const session = sessionLocalStorage.getItem()
+const initState = {
+  isLogined: !!session.content,
+  user: session,
+}
+
+export const ACTIONS = {
+  LOGIN: 'LOGIN',
+  LOGOUT: 'LOGOUT',
+}
 
 export default function addReducer(preState = initState, action) {
-  const { type, data } = action;
+  const { type, payload } = action
   switch (type) {
-    case LOGIN:
-      return data;
+    case ACTIONS.LOGIN:
+      return {
+        ...preState,
+        isLogined: true,
+        user: payload,
+      }
+    case ACTIONS.LOGOUT:
+      return {
+        ...preState,
+        isLogined: false,
+        user: {},
+      }
     default:
-      return preState;
+      return preState
   }
 }

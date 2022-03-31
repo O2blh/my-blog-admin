@@ -1,0 +1,27 @@
+.cardBox {
+  position: relative;
+  flex: 1 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+.cardBox:hover {
+  box-shadow: 0 0 10px rgb(0 0 0 / 40%);
+}
+.cardBox:hover .cardNumber {
+  color: red;
+}
+
+.cardLabel {
+  position: absolute;
+  font-size: 18px;
+  left: 20px;
+  top: 20px;
+  color: black;
+}
+
+.cardNumber {
+  font-size: 80px;
+  color: #1890ff;
+}
