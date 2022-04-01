@@ -15,7 +15,7 @@ export const _updateFriendLink = async (id, friendLink) => {
   return res
 }
 
-export const _getFriendLink = async () => {
+export const _getFriendLinks = async () => {
   const result = await db.collection('friendLink').get()
   return result.data
 }

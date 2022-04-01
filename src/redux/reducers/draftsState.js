@@ -1,5 +1,5 @@
 export const ACTIONS = {
-  GET_ARTICLES: 'GET_ARTICLES',
+  GET_DRAFTS: 'GET_DRAFTS',
 }
 
 const initialState = {
@@ -8,7 +8,7 @@ const initialState = {
 
 export default function addReducer(preState = initialState, { type, payload }) {
   switch (type) {
-    case ACTIONS.GET_ARTICLES:
+    case ACTIONS.GET_DRAFTS:
       return {
         ...preState,
         data: payload,

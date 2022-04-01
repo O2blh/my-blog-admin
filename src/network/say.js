@@ -15,7 +15,7 @@ export const _updatesay = async (id, say) => {
   return res
 }
 
-export const _getsay = async () => {
+export const _getsays = async () => {
   const result = await db.collection('say').get()
   return result.data
 }

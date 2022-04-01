@@ -9,36 +9,42 @@ import Tags from './Tags'
 import ROUTES from '@/constants/routes'
 
 import './style.css'
-
-const statisticData = [
-  {
-    label: '文章数',
-    number: 147,
-    route: ROUTES.ARTICLES,
-  },
-  {
-    label: '草稿数',
-    number: 147,
-    route: ROUTES.DRAFTS,
-  },
-  {
-    label: '友链数',
-    number: 147,
-    route: ROUTES.FRIEND_LINK,
-  },
-  {
-    label: '留言数',
-    number: 147,
-    route: ROUTES.MSG,
-  },
-  {
-    label: '说说',
-    number: 147,
-    route: ROUTES.SAY,
-  },
-]
+import { useArticle, useDrafts, useMsg, useSay } from '@/hooks'
+import useFriendlink from '@/hooks/useFriendLink'
 
 const Home = () => {
+  const [articles] = useArticle()
+  const [drafts] = useDrafts()
+  const [friendLinks] = useFriendlink()
+  const [msgs] = useMsg()
+  const [says] = useSay()
+  const statisticData = [
+    {
+      label: '文章数',
+      number: articles.length,
+      route: ROUTES.ARTICLES,
+    },
+    {
+      label: '草稿数',
+      number: drafts.length,
+      route: ROUTES.DRAFTS,
+    },
+    {
+      label: '友链数',
+      number: friendLinks.length,
+      route: ROUTES.FRIEND_LINK,
+    },
+    {
+      label: '留言数',
+      number: msgs.length,
+      route: ROUTES.MSG,
+    },
+    {
+      label: '说说',
+      number: says.length,
+      route: ROUTES.SAY,
+    },
+  ]
   return (
     <>
       <div className="outlineBox">

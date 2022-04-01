@@ -1,13 +1,13 @@
 import React from 'react'
-import { _getmsg } from '../network/msg'
+import { _getmsgs } from '../network/msg'
 
 const { useState, useEffect } = React
 
 export default function useMsg() {
   const [msgList, setMsgList] = useState([])
   const getMsgFromDB = async () => {
-    const res = await _getmsg()
-    setMsgList(res.data)
+    const res = await _getmsgs()
+    setMsgList(res)
   }
 
   useEffect(() => {
