@@ -9,6 +9,7 @@ const MSG = '/msg'
 const FRIEND_LINK = '/friendLink'
 const WORKS = '/works'
 const ABOUT = '/about'
+const ABOUT_EDIT = '/aboutEdit'
 const WEBSITE_LOGS = '/websiteLogs'
 const DRAFTS = '/drafts'
 
@@ -27,6 +28,7 @@ const ROUTES = {
   FRIEND_LINK,
   WORKS,
   ABOUT,
+  ABOUT_EDIT,
   WEBSITE_LOGS,
   DRAFTS,
   LOGIN,

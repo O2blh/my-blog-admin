@@ -1,0 +1,49 @@
+.aboutBox {
+  display: flex;
+  height: 100%;
+}
+.aboutMe,
+.aboutSite {
+  flex: 1 1;
+  display: flex;
+  flex-direction: column;
+}
+.aboutTitle {
+  position: relative;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #b9dfff;
+}
+.aboutSite .aboutTitle {
+  background-color: #a3d5ff;
+}
+
+.aboutTitle .editBtn {
+  position: absolute;
+  left: 4px;
+  top: 4px;
+  height: 42px;
+  width: 63px;
+  background-color: #1890ff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+}
+.aboutTitleDesc {
+  font-size: 24px;
+}
+.editBtn:hover {
+  background-color: #40a9ff;
+  box-shadow: 0 0 4px #1890ff;
+}
+
+.aboutContent {
+  flex: 1 1 auto;
+  background-color: #c8f3fd;
+}
+.aboutSite .aboutContent {
+  background-color: #b4f0fd;
+}

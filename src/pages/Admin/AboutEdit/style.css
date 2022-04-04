@@ -1,0 +1,49 @@
+.aboutEditBox {
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+}
+.aboutTitle {
+  position: relative;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #b9dfff;
+}
+.aboutSite .aboutTitle {
+  background-color: #a3d5ff;
+}
+
+.aboutTitle .editBtn {
+  position: absolute;
+  left: 4px;
+  top: 4px;
+  height: 42px;
+  width: 63px;
+  background-color: #1890ff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+}
+.aboutTitleDesc {
+  font-size: 24px;
+}
+.editBtn:hover {
+  background-color: #40a9ff;
+  box-shadow: 0 0 4px #1890ff;
+}
+
+.aboutEditBox .editBox {
+  flex: 1 1;
+  display: flex;
+  flex-direction: row;
+}
+.aboutEditBox .inputRegion {
+  flex: 1 1;
+  background-color: #c8f3fd;
+}
+.aboutEditBox .showRegion {
+  flex: 1 1;
+}

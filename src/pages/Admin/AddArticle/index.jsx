@@ -22,8 +22,7 @@ import useUrlState from '@ahooksjs/use-url-state'
 import { parshQueryString, debounce } from '@/utils/helper'
 import { marked } from 'marked'
 import hljs from 'highlight.js'
-// import 'highlight.js/styles/github.css'
-import './github-dark.css'
+import '@/style/github-dark.css'
 import './style.css'
 const { TextArea } = Input
 const { Option } = Select
