@@ -111,7 +111,7 @@ const Admin = () => {
           <Route path={ROUTES.FRIEND_LINK} component={FriendLink} />
           <Route path={ROUTES.WORKS} component={Works} />
           <Route path={ROUTES.ABOUT} component={About} />
-          <Route path={ROUTES.AboutEdit} component={AboutEdit} />
+          <Route path={ROUTES.ABOUT_EDIT} component={AboutEdit} />
           <Route path={ROUTES.WEBSITE_LOGS} component={WebSiteLogs} />
           <Route path={ROUTES.DRAFTS} component={Drafts} />
           <Redirect to={ROUTES.DEFAULT} />
