@@ -26,6 +26,18 @@ export const _getArtilceById = async (id) => {
 }
 
 export const _getArtilces = async () => {
-  const result = await db.collection('article').get()
+  const result = await db
+    .collection('article')
+    .field({
+      articleTitle: true,
+      abstract: true,
+      classify: true,
+      modifyDate: true,
+      publishDate: true,
+      tags: true,
+    })
+    .orderBy('publishDate', 'desc')
+    .get()
+  console.log(result)
   return result.data
 }

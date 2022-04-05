@@ -16,6 +16,6 @@ export const _updateSiteLog = async (id, siteLog) => {
 }
 
 export const _getSiteLog = async () => {
-  const result = await db.collection('siteLog').get()
+  const result = await db.collection('siteLog').orderBy('logDate', 'desc').get()
   return result.data
 }

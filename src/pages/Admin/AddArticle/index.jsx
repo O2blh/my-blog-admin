@@ -70,7 +70,8 @@ const AddArticle = () => {
     setArticleId(data._id)
     setArticleTitle(data.articleTitle)
     setArticleContent(data.articleContent)
-    setMarkdownContent(data.articleContent)
+    const mkd = marked(data.articleContent)
+    setMarkdownContent(mkd)
     setClassify(data.classify)
     setDefaultClassify(data.classify)
     setTags(data.tags)
@@ -88,10 +89,11 @@ const AddArticle = () => {
       return
     }
     const data = res[0]
-    setArticleId(data._id)
+    setDraftId(data._id)
     setArticleTitle(data.articleTitle)
     setArticleContent(data.articleContent)
-    setMarkdownContent(data.articleContent)
+    const mkd = marked(data.articleContent)
+    setMarkdownContent(mkd)
     setClassify(data.classify)
     setDefaultClassify(data.classify)
     setTags(data.tags)
@@ -165,8 +167,9 @@ const AddArticle = () => {
       message.warning(VISITOR_TEXT)
       return
     }
-
+    console.log(1, articleId)
     if (articleId) {
+      console.log(2)
       const res = _updateArtilce(articleId, {
         articleTitle,
         articleContent,
@@ -187,6 +190,7 @@ const AddArticle = () => {
         }, 1000)
       }
     } else {
+      console.log(3)
       const res = _createArtilce({
         articleTitle,
         articleContent,

@@ -1,7 +1,11 @@
 import React, { useRef, useState } from 'react'
 import { Button, List, message, Popconfirm, Modal } from 'antd'
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons'
-import { _updateClassify, _deleteClassify } from '@/network/classify'
+import {
+  _updateClassify,
+  _deleteClassify,
+  _createClassify,
+} from '@/network/classify'
 import useClassify from '@/hooks/useClassify'
 
 import './style.css'
@@ -49,7 +53,7 @@ const Classify = () => {
       message.warning('分类名已存在!')
       return
     }
-    const res = await _updateClassify({
+    const res = await _createClassify({
       classify: newClassify,
       count: 0,
     })

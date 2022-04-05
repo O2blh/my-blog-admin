@@ -72,8 +72,8 @@
 
 .publishContent {
   position: absolute;
-  top: 65px;
-  right: 0;
+  top: 75px;
+  right: 10px;
   width: 600px;
   height: 700px;
   border: 1px solid #ccc;

@@ -16,7 +16,17 @@ export const _updateDrafts = async (id, drafts) => {
 }
 
 export const _getAllDrafts = async () => {
-  const result = await db.collection('drafts').get()
+  const result = await db
+    .collection('drafts')
+    .field({
+      articleTitle: true,
+      abstract: true,
+      classify: true,
+      modifyDate: true,
+      tags: true,
+    })
+    .orderBy('modifyDate', 'desc')
+    .get()
   return result.data
 }
 

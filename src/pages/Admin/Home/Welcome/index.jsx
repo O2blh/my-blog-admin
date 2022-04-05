@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import { reqSvgs } from '@/utils/helper'
 import './style.css'
 import {
   VISITOR_AVATAR,
   ADMIN_UID,
   ADMIN_NAME,
   VISITOR_NAME,
+  ADMIN_AVATAR,
 } from '@/constants/siteInfo'
 import { auth } from '@/network/cloudBase'
 import usePoem from '@/hooks/usePoem'
@@ -15,8 +15,7 @@ const Welcome = () => {
   const [name, setName] = useState(VISITOR_NAME)
   useEffect(() => {
     if (auth.currentUser.uid === ADMIN_UID) {
-      const tx = reqSvgs('./tx.png')
-      setAvatar(tx)
+      setAvatar(ADMIN_AVATAR)
       setName(ADMIN_NAME)
     }
   }, [avatar, name])

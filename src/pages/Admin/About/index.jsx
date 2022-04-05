@@ -13,8 +13,8 @@ const About = () => {
     <div className="aboutBox">
       <div className="aboutMe">
         <div className="aboutTitle">
-          <div className="editBtn">
-            <FormOutlined onClick={() => turnToEditPage(1)} />
+          <div className="editBtn" onClick={() => turnToEditPage(1)}>
+            <FormOutlined />
           </div>
           <span className="aboutTitleDesc">关于我</span>
         </div>
@@ -22,8 +22,8 @@ const About = () => {
       </div>
       <div className="aboutSite">
         <div className="aboutTitle">
-          <div className="editBtn">
-            <FormOutlined onClick={() => turnToEditPage(0)} />
+          <div className="editBtn" onClick={() => turnToEditPage(0)}>
+            <FormOutlined />
           </div>
           <span className="aboutTitleDesc">关于本站</span>
         </div>
