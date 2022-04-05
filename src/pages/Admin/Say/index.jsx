@@ -87,6 +87,10 @@ const Say = () => {
     setIsModalVisible(false)
   }
 
+  const emojiClickCallback = (emoji) => {
+    setSayContent(sayContent + emoji)
+  }
+
   const columns = [
     {
       title: '说说内容',
@@ -155,11 +159,12 @@ const Say = () => {
           }}
           value={sayContent}
         ></TextArea>
-        <Emoji />
+        <Emoji emojiClickCallback={emojiClickCallback} />
       </Modal>
       <Table
         columns={columns}
         dataSource={sayList}
+        rowKey={(record) => record._id}
         pagination={{
           position: ['bottomCenter'],
           hideOnSinglePage: false,

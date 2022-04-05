@@ -116,6 +116,7 @@ const ArticleTabel = (props) => {
     <Table
       columns={columns}
       dataSource={articlesShow}
+      rowKey={(record) => record._id}
       pagination={{
         position: ['bottomCenter'],
         hideOnSinglePage: false,

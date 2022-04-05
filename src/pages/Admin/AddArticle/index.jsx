@@ -167,9 +167,7 @@ const AddArticle = () => {
       message.warning(VISITOR_TEXT)
       return
     }
-    console.log(1, articleId)
     if (articleId) {
-      console.log(2)
       const res = _updateArtilce(articleId, {
         articleTitle,
         articleContent,
@@ -190,7 +188,6 @@ const AddArticle = () => {
         }, 1000)
       }
     } else {
-      console.log(3)
       const res = _createArtilce({
         articleTitle,
         articleContent,

@@ -12,7 +12,6 @@ export default function useAbout() {
     setIsLoaded(true)
   }
   useEffect(() => {
-    console.log(1)
     if (!isLoaded) {
       getAboutFromDB()
     }

@@ -174,6 +174,7 @@ const FriendLink = () => {
       <Table
         columns={columns}
         dataSource={friendLinkList}
+        rowKey={(record) => record._id}
         pagination={{
           position: ['bottomCenter'],
           hideOnSinglePage: false,

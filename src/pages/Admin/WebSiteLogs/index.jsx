@@ -60,6 +60,7 @@ const WebSiteLogs = () => {
     }
   }
 
+  //删除日志
   const deleteLog = async (id) => {
     if (auth.currentUser.uid !== ADMIN_UID) {
       message.warning(VISITOR_TEXT)
@@ -97,6 +98,10 @@ const WebSiteLogs = () => {
     setContent('')
     setLogDate('')
     setIsModalVisible(false)
+  }
+
+  const emojiClickCallback = (emoji) => {
+    setContent(content + emoji)
   }
 
   const columns = [
@@ -175,7 +180,7 @@ const WebSiteLogs = () => {
                 }}
                 value={content}
               ></TextArea>
-              <Emoji />
+              <Emoji emojiClickCallback={emojiClickCallback} />
             </div>
           </div>
         </div>
@@ -183,6 +188,7 @@ const WebSiteLogs = () => {
       <Table
         columns={columns}
         dataSource={siteLog}
+        rowKey={(record) => record._id}
         pagination={{
           position: ['bottomCenter'],
           hideOnSinglePage: false,

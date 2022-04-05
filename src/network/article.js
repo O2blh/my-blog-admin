@@ -38,6 +38,5 @@ export const _getArtilces = async () => {
     })
     .orderBy('publishDate', 'desc')
     .get()
-  console.log(result)
   return result.data
 }

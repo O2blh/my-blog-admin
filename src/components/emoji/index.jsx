@@ -10,24 +10,46 @@ import {
 
 import './style.css'
 
-const Emoji = () => {
-  const emojiClick = (e) => {}
-  const wrapEmojiPeople = wrapEmoji(emojiPeople).map((emoji) => {
-    return <span onClick={emojiClick}>{emoji}</span>
-  })
+const Emoji = ({ emojiClickCallback }) => {
+  const emojiClick = (e) => {
+    emojiClickCallback(e.target.textContent)
+  }
 
   function wrapEmoji(emojiStr) {
+    const emojiArray = toEmojiArray(emojiStr)
+    const wrapEmojiArray = emojiArray.map((emoji, index) => {
+      return (
+        <span className="emoji" title={emoji} key={index} onClick={emojiClick}>
+          {emoji}
+        </span>
+      )
+    })
+    return wrapEmojiArray
+  }
+
+  function toEmojiArray(emojiStr) {
+    console.log(emojiStr)
     let len = emojiStr.length
     let i = 0
     const emojiArray = []
+    const regex = /[\ud800-\udbff]/
     while (i < len) {
-      if (emojiStr[i] === '\uD83D') {
+      if (regex.test(emojiStr[i])) {
+        emojiArray.push(emojiStr.substring(i, i + 2))
+        i += 2
+      } else {
+        emojiArray.push(emojiStr.substring(i, i + 1))
+        i += 1
       }
-      emojiArray.push(emojiStr.substring(i, i + 2))
-      i += 2
     }
     return emojiArray
   }
+
+  const wrapEmojiPeople = wrapEmoji(emojiPeople)
+  const wrapEmojiNature = wrapEmoji(emojiNature)
+  const wrapEmojiObj = wrapEmoji(emojiObj)
+  const wrapEmojiPlace = wrapEmoji(emojiPlace)
+  const wrapEmojiSymbol = wrapEmoji(emojiSymbol)
 
   return (
     <div className="emojBox">
@@ -35,7 +57,7 @@ const Emoji = () => {
         className="emojiBtn"
         overlayClassName="emojiContent"
         placement="bottom"
-        content={emojiPeople}
+        content={wrapEmojiPeople}
         trigger="click"
       >
         <Button>😄</Button>
@@ -44,7 +66,7 @@ const Emoji = () => {
         className="emojiBtn"
         overlayClassName="emojiContent"
         placement="bottom"
-        content={emojiNature}
+        content={wrapEmojiNature}
         trigger="click"
       >
         <Button>☀️</Button>
@@ -53,7 +75,7 @@ const Emoji = () => {
         className="emojiBtn"
         overlayClassName="emojiContent"
         placement="bottom"
-        content={emojiObj}
+        content={wrapEmojiObj}
         trigger="click"
       >
         <Button>🏀</Button>
@@ -62,7 +84,7 @@ const Emoji = () => {
         className="emojiBtn"
         overlayClassName="emojiContent"
         placement="bottom"
-        content={emojiPlace}
+        content={wrapEmojiPlace}
         trigger="click"
       >
         <Button>⛪</Button>
@@ -71,7 +93,7 @@ const Emoji = () => {
         className="emojiBtn"
         overlayClassName="emojiContent"
         placement="bottom"
-        content={emojiSymbol}
+        content={wrapEmojiSymbol}
         trigger="click"
       >
         <Button>🆗</Button>

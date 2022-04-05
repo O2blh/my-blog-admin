@@ -1,4 +1,4 @@
-import React, { Suspense, lazy, useEffect } from 'react'
+import React, { Suspense, lazy } from 'react'
 import { Route, Redirect, Switch } from 'react-router-dom'
 import Layout from '@/components/Layout'
 import ROUTES from '@/constants/routes'

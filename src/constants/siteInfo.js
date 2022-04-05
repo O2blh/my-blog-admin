@@ -4,7 +4,7 @@ export const SITE_NAME = '伊之助的后山' //网站的名字
 
 export const BLOG_URL = '' //博客地址
 
-export const SOURCE_CODE_URL = '' //源代码地址
+export const SOURCE_CODE_URL = 'https://github.com/O2blh/my-blog-admin.git' //源代码地址
 
 export const VISITOR_EMAIL = '1821306975@qq.com' //游客邮箱
 

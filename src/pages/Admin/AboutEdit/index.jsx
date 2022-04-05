@@ -66,7 +66,6 @@ const AboutEdit = () => {
         content,
         modifyDate: Date.now(),
       })
-      console.log(res)
     }
   }
   //使用useMemo保证保证每次获取的都是防抖之后的函数

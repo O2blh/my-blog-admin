@@ -98,6 +98,7 @@ const Msg = () => {
     <Table
       columns={columns}
       dataSource={msgList}
+      rowKey={(record) => record._id}
       pagination={{
         position: ['bottomCenter'],
         hideOnSinglePage: false,
