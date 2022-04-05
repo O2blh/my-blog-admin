@@ -16,6 +16,6 @@ export const _updatesay = async (id, say) => {
 }
 
 export const _getsays = async () => {
-  const result = await db.collection('say').get()
+  const result = await db.collection('say').orderBy('publishDate', 'desc').get()
   return result.data
 }
