@@ -100,6 +100,7 @@ const Drafts = () => {
       <Table
         columns={columns}
         dataSource={drafts}
+        rowKey={(record) => record._id}
         pagination={{
           position: ['bottomCenter'],
           hideOnSinglePage: false,

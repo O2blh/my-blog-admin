@@ -17,7 +17,7 @@ const ArticleTabel = (props) => {
       message.warning(VISITOR_TEXT)
       return
     }
-    history.push(`${ROUTES.ADD_ARTICLE}?articleId=${id}&isDraft=`)
+    history.push(`${ROUTES.ADD_ARTICLE}?draftId=${id}`)
   }
   const deleteArticle = async (id) => {
     if (auth.currentUser.uid !== ADMIN_UID) {
@@ -86,7 +86,7 @@ const ArticleTabel = (props) => {
       key: '_id',
       render: (record) => (
         <Space size="middle">
-          <Button type="primary" onClick={() => editArticle(record._id)}>
+          <Button type="primary" onClick={() => editArticle(record.draftId)}>
             修改
           </Button>
           <Popconfirm

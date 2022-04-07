@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect, useMemo } from 'react'
+import React, { useRef, useState, useEffect, useMemo, useReducer } from 'react'
 import { useLocation, useHistory } from 'react-router-dom'
 import ROUTES from '@/constants/routes'
 import useClickAway from '@/hooks/useClickAway'
@@ -27,6 +27,32 @@ import './style.css'
 const { TextArea } = Input
 const { Option } = Select
 
+const initialState = {
+  draftId: '', // 草稿id
+  articleTitle: '', // 文章标题
+  articleContent: '', // 文章内容
+  markdownContent: '', // markdown显示内容
+  tags: [], // 文章标签
+  classify: '', // 文章分类
+  defaultClassify: '', //原先的文章分类
+  abstract: '', // 文章概要
+  abstractLength: 0,
+  isPublished: false, //是否已发布
+  publishId: '', //已发布的文章ID
+}
+
+function reducer(state, action) {
+  switch (action.type) {
+    case 'update':
+      return {
+        ...state,
+        ...action.payload,
+      }
+    default:
+      return state
+  }
+}
+
 const AddArticle = () => {
   const location = useLocation()
   const history = useHistory()
@@ -34,20 +60,23 @@ const AddArticle = () => {
     return parshQueryString(location.search)
   }, [location.search])
 
+  const [isMounted, setIsMounted] = useState(false)
+
   const [urlState, setUrlState] = useUrlState(queryObj)
-
-  const [articleId, setArticleId] = useState(urlState.articleId) // 文章id
-  const [articleTitle, setArticleTitle] = useState('') // 文章标题
-  const [articleContent, setArticleContent] = useState('') // 文章内容
-  const [markdownContent, setMarkdownContent] = useState('') // markdown显示内容
-  // const [publishDate, setPUblishDate] = useState('') // 发布日期
-  const [tags, setTags] = useState([]) // 文章标签
-  const [classify, setClassify] = useState('') // 文章分类
-  const [abstract, setAbstract] = useState('') // 文章概要
-  const [abstractLength, setAbstractLength] = useState(0)
-  const [defaultClassify, setDefaultClassify] = useState('') //原先的文章分类
-
-  const [draftId, setDraftId] = useState(urlState.draftId) //草稿id
+  const [state, dispatch] = useReducer(reducer, initialState)
+  const {
+    draftId,
+    articleTitle,
+    articleContent,
+    markdownContent,
+    tags,
+    classify,
+    defaultClassify,
+    abstract,
+    abstractLength,
+    isPublished,
+    publishId,
+  } = state
 
   //文章分类数据
   const [classifies] = useClassify()
@@ -57,28 +86,7 @@ const AddArticle = () => {
   //自动保存提示信息
   const [autoSaveMsg, setAutoSaveMsg] = useState('文章将自动保存至草稿箱')
 
-  const getArticleById = async (articleId) => {
-    const res = await _getArtilceById(articleId)
-    if (!res || res.length === 0) {
-      message.warning('文章不存在')
-      setTimeout(() => {
-        history.push(ROUTES.ARTICLES)
-      }, 1000)
-      return
-    }
-    const data = res[0]
-    setArticleId(data._id)
-    setArticleTitle(data.articleTitle)
-    setArticleContent(data.articleContent)
-    const mkd = marked(data.articleContent)
-    setMarkdownContent(mkd)
-    setClassify(data.classify)
-    setDefaultClassify(data.classify)
-    setTags(data.tags)
-    setAbstract(data.abstract)
-    setAbstractLength(data.abstract.length)
-  }
-
+  //获取草稿
   const getDraftById = async (draftId) => {
     const res = await _getDraftById(draftId)
     if (!res || res.length === 0) {
@@ -89,24 +97,33 @@ const AddArticle = () => {
       return
     }
     const data = res[0]
-    setDraftId(data._id)
-    setArticleTitle(data.articleTitle)
-    setArticleContent(data.articleContent)
     const mkd = marked(data.articleContent)
-    setMarkdownContent(mkd)
-    setClassify(data.classify)
-    setDefaultClassify(data.classify)
-    setTags(data.tags)
-    setAbstract(data.abstract)
-    setAbstractLength(data.abstract.length)
+    const draft = {
+      draftId: data._id,
+      articleTitle: data.articleTitle,
+      articleContent: data.articleContent,
+      markdownContent: mkd,
+      classify: data.classify,
+      defaultClassify: data.classify,
+      tags: data.tags,
+      abstract: data.abstract,
+      abstractLength: data.abstract.length,
+      isPublished: data.isPublished,
+      publishId: data.publishId,
+    }
+    dispatch({
+      type: 'update',
+      payload: draft,
+    })
+    setIsMounted(true)
   }
 
+  //如果是编辑,获取草稿数据
   useEffect(() => {
-    if (urlState.articleId) {
-      getArticleById(urlState.articleId)
-    }
     if (urlState.draftId) {
       getDraftById(urlState.draftId)
+    } else {
+      setIsMounted(true)
     }
   }, [])
 
@@ -149,7 +166,7 @@ const AddArticle = () => {
     setIsShowPublishBox(false)
   })
 
-  //创建或更新文章
+  //发布或更新文章
   const createOrUpdateArticle = async () => {
     if (!articleTitle) {
       message.info('请输入文章标题！')
@@ -167,8 +184,8 @@ const AddArticle = () => {
       message.warning(VISITOR_TEXT)
       return
     }
-    if (articleId) {
-      const res = _updateArtilce(articleId, {
+    if (isPublished) {
+      const res = await _updateArtilce(publishId, {
         articleTitle,
         articleContent,
         modifyDate: Date.now(),
@@ -188,7 +205,7 @@ const AddArticle = () => {
         }, 1000)
       }
     } else {
-      const res = _createArtilce({
+      const res = await _createArtilce({
         articleTitle,
         articleContent,
         publishDate: Date.now(),
@@ -196,13 +213,15 @@ const AddArticle = () => {
         tags,
         classify,
         abstract,
+        draftId,
       })
       if (res) {
         message.success('发布成功!')
         classPlusOne(classify)
-        if (draftId) {
-          _deleteDrafts(draftId)
-        }
+        _updateDrafts(draftId, {
+          isPublished: true,
+          publishId: res.id,
+        })
         setTimeout(() => {
           history.push(ROUTES.ARTICLES)
         }, 1000)
@@ -213,25 +232,34 @@ const AddArticle = () => {
   //保存文章到草稿箱
   const saveArticleToDrafts = async (draftId, article) => {
     if (draftId) {
+      setAutoSaveMsg('保存中...')
       const res = await _updateDrafts(draftId, {
         ...article,
         modifyDate: Date.now(),
       })
       if (res) {
-        changeAutoSaveMsg()
+        setAutoSaveMsg('保存成功')
       }
     } else {
+      setAutoSaveMsg('保存中...')
       const res = await _createDrafts({
         ...article,
+        isPublished: false,
+        publishId: '',
         modifyDate: Date.now(),
       })
       if (res) {
-        setDraftId(res.id)
+        dispatch({
+          type: 'update',
+          payload: {
+            draftId: res.id,
+          },
+        })
         setUrlState({
           ...urlState,
           draftId: res.id,
         })
-        changeAutoSaveMsg()
+        setAutoSaveMsg('保存成功')
       }
     }
   }
@@ -244,6 +272,9 @@ const AddArticle = () => {
 
   //当内容改变后，使用副作用将内容自动保存到草稿箱
   useEffect(() => {
+    if (!isMounted) {
+      return
+    }
     if (!articleTitle && !articleContent) {
       return
     }
@@ -254,14 +285,7 @@ const AddArticle = () => {
       classify,
       abstract,
     })
-  }, [draftId, articleTitle, articleContent, tags, classify, abstract])
-
-  const changeAutoSaveMsg = () => {
-    setAutoSaveMsg('保存成功')
-    setTimeout(() => {
-      setAutoSaveMsg('文章将自动保存至草稿箱')
-    }, 2000)
-  }
+  }, [articleTitle, articleContent, tags, classify, abstract])
 
   return (
     <div className="articleBox">
@@ -269,7 +293,12 @@ const AddArticle = () => {
         <input
           className="articleTitle"
           value={articleTitle}
-          onChange={(e) => setArticleTitle(e.target.value)}
+          onChange={(e) =>
+            dispatch({
+              type: 'update',
+              payload: { articleTitle: e.target.value },
+            })
+          }
           placeholder="请输入文章标题..."
         />
         <div className="rightBox">
@@ -302,7 +331,7 @@ const AddArticle = () => {
                     allowClear
                     placeholder="请选择文章分类"
                     onChange={(value) => {
-                      setClassify(value)
+                      dispatch({ type: 'update', payload: { classify: value } })
                     }}
                     value={classify}
                   >
@@ -324,7 +353,7 @@ const AddArticle = () => {
                     allowClear
                     placeholder="请选择文章标签"
                     onChange={(value) => {
-                      setTags(value)
+                      dispatch({ type: 'update', payload: { tags: value } })
                     }}
                     value={tags}
                   >
@@ -347,8 +376,13 @@ const AddArticle = () => {
                       rows={5}
                       maxLength={100}
                       onChange={(e) => {
-                        setAbstract(e.target.value)
-                        setAbstractLength(e.target.value.length)
+                        dispatch({
+                          type: 'update',
+                          payload: {
+                            abstract: e.target.value,
+                            abstractLength: e.target.value.length,
+                          },
+                        })
                       }}
                       value={abstract}
                     ></TextArea>
@@ -385,9 +419,14 @@ const AddArticle = () => {
         <TextArea
           className="inputRegion"
           onChange={(e) => {
-            setArticleContent(e.target.value)
             const mkd = marked(e.target.value)
-            setMarkdownContent(mkd)
+            dispatch({
+              type: 'update',
+              payload: {
+                articleContent: e.target.value,
+                markdownContent: mkd,
+              },
+            })
           }}
           value={articleContent}
         ></TextArea>

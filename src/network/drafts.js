@@ -18,6 +18,9 @@ export const _updateDrafts = async (id, drafts) => {
 export const _getAllDrafts = async () => {
   const result = await db
     .collection('drafts')
+    .where({
+      isPublished: false,
+    })
     .field({
       articleTitle: true,
       abstract: true,

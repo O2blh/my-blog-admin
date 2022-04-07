@@ -35,6 +35,7 @@ export const _getArtilces = async () => {
       modifyDate: true,
       publishDate: true,
       tags: true,
+      draftId: true,
     })
     .orderBy('publishDate', 'desc')
     .get()
