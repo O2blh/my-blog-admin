@@ -8,8 +8,10 @@ import {
 } from '@/network/siteLog'
 import { auth } from '@/network/cloudBase'
 import { ADMIN_UID, VISITOR_TEXT } from '@/constants/siteInfo'
-import dayjs from 'dayjs'
+import dayjs from '@/components/dayjs'
+// import dayjs from 'dayjs'
 import Emoji from '@/components/Emoji'
+import { DatePicker } from 'antd'
 
 import './style.css'
 
@@ -164,10 +166,14 @@ const WebSiteLogs = () => {
           <div className="formItem">
             <div className="formItemLabel">日期:</div>
             <div className="formItemContent">
-              <Input
+              <DatePicker
+                onChange={(date, dateString) => setLogDate(dateString)}
+                value={dayjs(logDate)}
+              />
+              {/* <Input
                 onChange={(e) => setLogDate(e.target.value)}
                 value={logDate}
-              />
+              /> */}
             </div>
           </div>
           <div className="formItem">
