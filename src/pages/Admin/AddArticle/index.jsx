@@ -279,6 +279,24 @@ const AddArticle = () => {
     })
   }, [articleTitle, articleContent, tags, classify, abstract])
 
+  const mkdRegionRef = useRef()
+  //预览区同步滚动
+  const onScrollEvent = (e) => {
+    const { scrollHeight, scrollTop, clientHeight } = e.target
+    //输入区可滚动的高度 = 元素总高度 - 显示区高度
+    const inputRegionCanScrollHeight = scrollHeight - clientHeight
+    //预览区可滚动的高度 = 元素总高度 - 显示区高度
+    const showRegionCanScrollHeight =
+      mkdRegionRef.current.scrollHeight - mkdRegionRef.current.clientHeight
+    // 滚动位置 =  (已滚动的高度/可滚动的高度) * 预览区可滚动的高度
+    const posY = Math.round(
+      (scrollTop / inputRegionCanScrollHeight) * showRegionCanScrollHeight
+    )
+    mkdRegionRef.current.scrollTop = posY
+  }
+
+  const debounceScrollEvent = useMemo(() => debounce(onScrollEvent, 10), [])
+
   return (
     <div className="articleBox">
       <div className="articleTitleBox">
@@ -421,8 +439,10 @@ const AddArticle = () => {
             })
           }}
           value={articleContent}
+          onScroll={debounceScrollEvent}
         ></TextArea>
         <div
+          ref={mkdRegionRef}
           className="showRegion markdownStyle"
           dangerouslySetInnerHTML={{
             __html: markdownContent.replace(/<pre>/g, "<pre id='hljs'>"),
