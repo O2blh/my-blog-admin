@@ -28,7 +28,6 @@ const Emoji = ({ emojiClickCallback }) => {
   }
 
   function toEmojiArray(emojiStr) {
-    console.log(emojiStr)
     let len = emojiStr.length
     let i = 0
     const emojiArray = []
