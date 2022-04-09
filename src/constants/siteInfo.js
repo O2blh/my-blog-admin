@@ -19,7 +19,7 @@ export const VISITOR_AVATAR =
 
 export const ADMIN_UID = '2f3d6d8e1ebc43168791367a581837d1'
 
-export const ADMIN_NAME = '山大王'
+export const ADMIN_NAME = '伊之助'
 
 export const ADMIN_AVATAR =
   'https://cdn.jsdelivr.net/gh/O2blh/cdn/img/avatar.webp'
