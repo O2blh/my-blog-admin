@@ -34,6 +34,10 @@
 }
 
 /* ——————————————————————————————显示区markdown样式—————————————————————————————— */
+/* 字体大小 */
+.markdownStyle {
+  font-size: 16px;
+}
 /* 表格 */
 .markdownStyle table {
   margin: 20px auto;
@@ -47,15 +51,25 @@
   border: 1px solid #000;
 }
 /* h1 h2 h3 h4 h5 h6 p */
-/* .markdownStyle h1,
+.markdownStyle h1,
 .markdownStyle h2,
 .markdownStyle h3,
 .markdownStyle h4,
 .markdownStyle h5,
 .markdownStyle h6,
 .markdownStyle p {
-  margin: 0.3em;
-} */
+  margin: 0.5em;
+}
+
+.markdownStyle h1,
+.markdownStyle h2,
+.markdownStyle h3,
+.markdownStyle h4,
+.markdownStyle h5,
+.markdownStyle h6 {
+  font-weight: 700;
+}
+
 /* 行内代码 */
 .markdownStyle code {
   color: red;
@@ -71,7 +85,7 @@
   border-radius: 12px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
 }
-
+/* 引用 */
 .markdownStyle blockquote {
   background-color: #dfdfdf;
   padding: 14px 40px;
@@ -79,11 +93,19 @@
   border-radius: 20px;
   border: 2px rgb(105, 105, 105) dashed;
 }
+/* 加粗 */
 .markdownStyle strong {
   text-decoration: underline;
 }
 
 .markdownStyle blockquote p {
   margin: 0;
+}
+
+/* 分割线 */
+.markdownStyle hr {
+  border: 0;
+  margin-bottom: 20px;
+  border-top: 1px solid #eee;
 }
 /* ———————————————————————————————————————————————————————————— */
