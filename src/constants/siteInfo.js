@@ -15,14 +15,14 @@ export const VISITOR_NAME = '游客'
 export const VISITOR_TEXT = '游客不可以修改'
 
 export const VISITOR_AVATAR =
-  'https://cdn.jsdelivr.net/gh/O2blh/cdn/img/visitor_avatar.webp'
+  'https://images-1310355014.cos.ap-nanjing.myqcloud.com/visitor_avatar.webp'
 
 export const ADMIN_UID = '2f3d6d8e1ebc43168791367a581837d1'
 
 export const ADMIN_NAME = '伊之助'
 
 export const ADMIN_AVATAR =
-  'https://cdn.jsdelivr.net/gh/O2blh/cdn/img/avatar.webp'
+  'https://images-1310355014.cos.ap-nanjing.myqcloud.com/blog/avatar.webp'
 
 export const NOTICE_ID = '807102f6623a977f015e40ab43507aa2'
 
