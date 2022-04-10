@@ -1,0 +1,50 @@
+.rightBox {
+  position: relative;
+  display: flex;
+  flex: 1 1;
+  height: 100%;
+  justify-content: end;
+  align-items: center;
+}
+
+.tooltip,
+.draftsBtn,
+.publishBox {
+  margin-right: 20px;
+}
+
+.tooltip {
+  color: #c9cdd4;
+}
+
+.commonBtn {
+  font-size: 16px;
+  padding: 6px 16px;
+  outline: none;
+  border-radius: 2px;
+  background-color: white;
+  border: 1px solid #1d7dfa;
+  color: #1d7dfa;
+  box-sizing: border-box;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.commonBtn:hover {
+  border-color: #388eff;
+  color: #388eff;
+}
+.primaryBtn {
+  font-size: 16px;
+  padding: 6px 16px;
+  outline: none;
+  border-radius: 2px;
+  background-color: #1d7dfa;
+  border: 1px solid #1d7dfa;
+  color: white;
+  box-sizing: border-box;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.primaryBtn:hover {
+  background-color: #388eff;
+}
