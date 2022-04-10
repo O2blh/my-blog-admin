@@ -1,21 +1,21 @@
 import { db } from './cloudBase'
 
-export const _createDrafts = async (drafts) => {
+export const _createDraft = async (drafts) => {
   const res = await db.collection('drafts').add(drafts)
   return res
 }
 
-export const _deleteDrafts = async (id) => {
+export const _deleteDraft = async (id) => {
   const res = await db.collection('drafts').doc(id).remove()
   return res
 }
 
-export const _updateDrafts = async (id, drafts) => {
+export const _updateDraft = async (id, drafts) => {
   const res = await db.collection('drafts').doc(id).update(drafts)
   return res
 }
 
-export const _getAllDrafts = async () => {
+export const _getDrafts = async () => {
   const result = await db
     .collection('drafts')
     .where({

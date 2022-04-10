@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useCallback, useRef, useState } from 'react'
 
 import { Button, Select } from 'antd'
 import { useHistory } from 'react-router-dom'
@@ -11,12 +11,16 @@ const { Option } = Select
 
 const SearchBox = ({ articles, setArtilesShow, classifies, tags }) => {
   const history = useHistory()
-  const turnToAddPage = () => {
+
+  //跳转到写文章页面
+  const turnToAddPage = useCallback(() => {
     history.push(ROUTES.ADD_ARTICLE)
-  }
+  }, [history])
 
   const searchWordsRef = useRef()
-  const searchByWords = () => {
+
+  //根据标题搜索文章
+  const searchByWords = useCallback(() => {
     const keywords = searchWordsRef.current.value.toLocaleLowerCase()
     if (!keywords) {
       setArtilesShow(articles)
@@ -24,42 +28,62 @@ const SearchBox = ({ articles, setArtilesShow, classifies, tags }) => {
     }
     setArtilesShow(
       articles.filter(
-        (article) => article.title.toLocaleLowerCase().indexOf(keywords) !== -1
+        (article) =>
+          article.articleTitle.toLocaleLowerCase().indexOf(keywords) !== -1
       )
     )
-  }
+  }, [articles, setArtilesShow])
 
+  //搜索的分类
   const [searchClassify, setSearchClassify] = useState()
-  const searchByClassify = (value) => {
-    searchWordsRef.current.value = ''
-    setSearchTag([])
-    if (!value) {
-      setArtilesShow(articles)
-      return
-    }
-    setArtilesShow(articles.filter((article) => article.classify === value))
-  }
-  const onSearchClassifyChange = (value) => {
-    searchByClassify(value)
-    setSearchClassify(value)
-  }
+  //根据分类搜索
+  const searchByClassify = useCallback(
+    (value) => {
+      searchWordsRef.current.value = ''
+      setSearchTag([])
+      if (!value) {
+        setArtilesShow(articles)
+        return
+      }
+      setArtilesShow(articles.filter((article) => article.classify === value))
+    },
+    [articles, setArtilesShow]
+  )
+  //搜索标签改变事件
+  const onSearchClassifyChange = useCallback(
+    (value) => {
+      searchByClassify(value)
+      setSearchClassify(value)
+    },
+    [searchByClassify, setSearchClassify]
+  )
 
+  //搜索的标签
   const [searchTag, setSearchTag] = useState([])
-  const searchByTag = (tags) => {
-    searchWordsRef.current.value = ''
-    setSearchClassify(null)
-    if (!tags || tags.length === 0) {
-      setArtilesShow(articles)
-      return
-    }
-    setArtilesShow(
-      articles.filter((article) => isContained(article.tags, tags))
-    )
-  }
-  const onSearchTagChange = (value) => {
-    setSearchTag(value)
-    searchByTag(value)
-  }
+  //根据标签搜索
+  const searchByTag = useCallback(
+    (tags) => {
+      searchWordsRef.current.value = ''
+      setSearchClassify(null)
+      if (!tags || tags.length === 0) {
+        setArtilesShow(articles)
+        return
+      }
+      setArtilesShow(
+        articles.filter((article) => isContained(article.tags, tags))
+      )
+    },
+    [articles, setArtilesShow]
+  )
+  //搜索分类改变事件
+  const onSearchTagChange = useCallback(
+    (value) => {
+      setSearchTag(value)
+      searchByTag(value)
+    },
+    [setSearchTag, searchByTag]
+  )
+
   return (
     <div className="searchBox">
       <Button type="primary" onClick={turnToAddPage}>
@@ -82,7 +106,7 @@ const SearchBox = ({ articles, setArtilesShow, classifies, tags }) => {
         onChange={onSearchClassifyChange}
       >
         {classifies.map((item) => (
-          <Option key={item._id}>{item.classify}</Option>
+          <Option key={item.classify}>{item.classify}</Option>
         ))}
       </Select>
       <Select
@@ -97,7 +121,7 @@ const SearchBox = ({ articles, setArtilesShow, classifies, tags }) => {
         onChange={onSearchTagChange}
       >
         {tags.map((item) => (
-          <Option key={item._id}>{item.tag}</Option>
+          <Option key={item.tag}>{item.tag}</Option>
         ))}
       </Select>
     </div>

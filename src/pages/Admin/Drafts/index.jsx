@@ -6,7 +6,7 @@ import { auth } from '@/network/cloudBase'
 import { ADMIN_UID, VISITOR_TEXT } from '@/constants/siteInfo'
 import { useHistory } from 'react-router-dom'
 import ROUTES from '@/constants/routes'
-import { _deleteDrafts } from '@/network/drafts'
+import { _deleteDraft } from '@/network/drafts'
 
 const Drafts = () => {
   const [drafts, getDraftsFromDb] = useDrafts()
@@ -16,7 +16,7 @@ const Drafts = () => {
   }
 
   const deleteArticle = async (id) => {
-    const res = await _deleteDrafts(id)
+    const res = await _deleteDraft(id)
     if (res) {
       message.success('删除成功')
       getDraftsFromDb()

@@ -10,10 +10,11 @@ const Articles = () => {
   const [classify] = useClassify()
   const [tagList] = useTag()
   const [articles, getArticleFromDB] = useArticle()
-  const [articlesShow, setArtilesShow] = useState(articles)
+  const [articlesShow, setArtilesShow] = useState([])
   useEffect(() => {
     setArtilesShow(articles)
   }, [articles])
+  console.log('article render')
   return (
     <>
       <SearchBox

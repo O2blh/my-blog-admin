@@ -5,7 +5,7 @@ import useClickAway from '@/hooks/useClickAway'
 import { Input, Select, message } from 'antd'
 import { auth } from '@/network/cloudBase'
 import { _updateArtilce, _createArtilce } from '@/network/article'
-import { _createDrafts, _getDraftById, _updateDrafts } from '@/network/drafts'
+import { _createDraft, _getDraftById, _updateDraft } from '@/network/drafts'
 import { classMinOne, classPlusOne } from '@/network/classify'
 import { ADMIN_UID, VISITOR_TEXT } from '@/constants/siteInfo'
 import { useClassify, useTag } from '@/hooks'
@@ -210,7 +210,7 @@ const AddArticle = () => {
       if (res) {
         message.success('发布成功!')
         classPlusOne(classify)
-        _updateDrafts(draftId, {
+        _updateDraft(draftId, {
           isPublished: true,
           publishId: res.id,
         })
@@ -225,7 +225,7 @@ const AddArticle = () => {
   const saveArticleToDrafts = async (draftId, article) => {
     if (draftId) {
       setAutoSaveMsg('保存中...')
-      const res = await _updateDrafts(draftId, {
+      const res = await _updateDraft(draftId, {
         ...article,
         modifyDate: Date.now(),
       })
@@ -234,7 +234,7 @@ const AddArticle = () => {
       }
     } else {
       setAutoSaveMsg('保存中...')
-      const res = await _createDrafts({
+      const res = await _createDraft({
         ...article,
         isPublished: false,
         publishId: '',

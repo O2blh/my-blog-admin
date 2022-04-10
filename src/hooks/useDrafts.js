@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react'
-import { _getAllDrafts } from '../network/drafts'
+import { _getDrafts } from '../network/drafts'
 
 export default function useDrafts() {
   const [drafts, setDrafts] = useState([])
   const getDraftsFromDb = async () => {
-    const res = await _getAllDrafts()
+    const res = await _getDrafts()
     setDrafts(res)
   }
   useEffect(() => {
