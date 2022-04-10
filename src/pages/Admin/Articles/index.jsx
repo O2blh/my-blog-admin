@@ -14,7 +14,6 @@ const Articles = () => {
   useEffect(() => {
     setArtilesShow(articles)
   }, [articles])
-  console.log('article render')
   return (
     <>
       <SearchBox

@@ -51,6 +51,7 @@ const AddArticle = () => {
 
   const [urlState, setUrlState] = useUrlState(queryObj)
   const [state, dispatch] = useReducer(reducer, initialState)
+
   const { draftId, articleTitle, articleContent, tags, classify, abstract } =
     state
 

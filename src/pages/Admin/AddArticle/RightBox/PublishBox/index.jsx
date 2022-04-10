@@ -1,7 +1,6 @@
-import React, { useRef } from 'react'
+import React from 'react'
 import { Input, Select, message } from 'antd'
 import { useClassify, useTag } from '@/hooks'
-import useClickAway from '@/hooks/useClickAway'
 import { auth } from '@/network/cloudBase'
 import { ADMIN_UID, VISITOR_TEXT } from '@/constants/siteInfo'
 import { _updateArtilce, _createArtilce } from '@/network/article'
@@ -38,16 +37,6 @@ const PublishBox = ({
   } = state
 
   const history = useHistory()
-  const publishBoxRef = useRef()
-
-  //在发布弹框以外点击，隐藏发布框
-  useClickAway(publishBoxRef, (event) => {
-    //使用antd的Select下拉框会在body下挂载一个dropdown元素，点击dropdown时，这个事件不是从内部触发，这会导致隐藏发布文章的合资，判断一下事件来源是不是从生成的dropdown内部传出来的，如果是，不做任何操作
-    if (!document.getElementById('root').contains(event.target)) {
-      return
-    }
-    setIsShowPublishBox(false)
-  })
 
   //发布或更新文章
   const createOrUpdateArticle = async () => {
@@ -114,7 +103,6 @@ const PublishBox = ({
 
   return (
     <div
-      ref={publishBoxRef}
       className="publishContent"
       style={{ display: isShowPublishBox ? 'block' : 'none' }}
     >
@@ -210,4 +198,4 @@ const PublishBox = ({
   )
 }
 
-export default PublishBox
+export default React.memo(PublishBox)

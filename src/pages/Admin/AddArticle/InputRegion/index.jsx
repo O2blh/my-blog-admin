@@ -29,4 +29,8 @@ const InputRegion = ({ state, dispatch, debounceScrollEvent }) => {
   )
 }
 
-export default InputRegion
+function areEqual(prevProps, nextProps) {
+  return prevProps.state.articleContent === nextProps.state.articleContent
+}
+
+export default React.memo(InputRegion, areEqual)

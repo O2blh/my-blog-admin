@@ -14,4 +14,8 @@ const PreviewRegion = React.forwardRef(({ state }, ref) => {
   )
 })
 
-export default PreviewRegion
+function areEqual(prevProps, nextProps) {
+  return prevProps.state.markdownContent === nextProps.state.markdownContent
+}
+
+export default React.memo(PreviewRegion, areEqual)

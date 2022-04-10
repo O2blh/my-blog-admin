@@ -19,4 +19,8 @@ const ArticleTitle = ({ state, dispatch }) => {
   )
 }
 
-export default ArticleTitle
+function areEqual(prevProps, nextProps) {
+  return prevProps.state.articleTitle === nextProps.state.articleTitle
+}
+
+export default React.memo(ArticleTitle, areEqual)
