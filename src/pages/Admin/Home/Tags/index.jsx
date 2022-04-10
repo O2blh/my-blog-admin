@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useCallback, useMemo, useRef, useState } from 'react'
 import { Button, message, Popconfirm, Modal } from 'antd'
 import { CloseOutlined } from '@ant-design/icons'
 import { _createTag, _deleteTag, _updateTag } from '@/network/tag'
@@ -7,34 +7,38 @@ import { useTag } from '@/hooks'
 
 const Tags = () => {
   const inputRef = useRef()
-  const tagColor = [
-    'rgb(236, 17, 17)',
-    'rgb(236, 141, 17)',
-    'rgb(177, 174, 11)',
-    'rgb(116, 115, 109)',
-    'rgb(77, 75, 65)',
-    'rgb(35, 207, 50)',
-    'rgb(38, 204, 162)',
-    'rgb(11, 156, 120)',
-    'rgb(4, 187, 211)',
-    'rgb(7, 133, 206)',
-    'rgb(7, 64, 151)',
-    'rgb(9, 24, 235)',
-    'rgb(157, 160, 212)',
-    'rgb(144, 76, 235)',
-    'rgb(209, 76, 235)',
-    'rgb(224, 19, 224)',
-    'rgb(238, 45, 126)',
-    'rgb(253, 48, 65)',
-    '#f50',
-    '#2db7f5',
-    '#87d068',
-    '#108ee9',
-  ]
+  const tagColor = useMemo(() => {
+    return [
+      'rgb(236, 17, 17)',
+      'rgb(236, 141, 17)',
+      'rgb(177, 174, 11)',
+      'rgb(116, 115, 109)',
+      'rgb(77, 75, 65)',
+      'rgb(35, 207, 50)',
+      'rgb(38, 204, 162)',
+      'rgb(11, 156, 120)',
+      'rgb(4, 187, 211)',
+      'rgb(7, 133, 206)',
+      'rgb(7, 64, 151)',
+      'rgb(9, 24, 235)',
+      'rgb(157, 160, 212)',
+      'rgb(144, 76, 235)',
+      'rgb(209, 76, 235)',
+      'rgb(224, 19, 224)',
+      'rgb(238, 45, 126)',
+      'rgb(253, 48, 65)',
+      '#f50',
+      '#2db7f5',
+      '#87d068',
+      '#108ee9',
+    ]
+  }, [])
+
   const colorLen = tagColor.length
 
   const [tagList, getTagsFromDB] = useTag()
 
+  //创建标签
   const createTag = async () => {
     const newtTag = inputRef.current.value
     if (!newtTag) {
@@ -55,6 +59,7 @@ const Tags = () => {
     }
   }
 
+  //删除标签
   const deleteTag = async (item) => {
     const res = await _deleteTag(item._id)
     if (res) {
@@ -63,6 +68,7 @@ const Tags = () => {
     }
   }
 
+  //编辑标签
   const editTag = async () => {
     if (!editName) {
       message.warning('标签不可以为空!')
@@ -82,21 +88,23 @@ const Tags = () => {
     }
   }
 
-  const [isModalVisible, setIsModalVisible] = useState(false)
-  const [editId, setEdidId] = useState(null)
-  const [editName, setEditName] = useState(null)
+  const [isModalVisible, setIsModalVisible] = useState(false) //弹框状态(显示/隐藏)
+  const [editId, setEdidId] = useState(null) //编辑中的tagId
+  const [editName, setEditName] = useState(null) //编辑中的tag名
 
-  const showEditModal = (item) => {
+  //打开编辑弹框
+  const showEditModal = useCallback((item) => {
     setEdidId(item._id)
     setEditName(item.tag)
     setIsModalVisible(true)
-  }
+  }, [])
 
-  const cancelEditModal = () => {
+  //关闭编辑弹框
+  const cancelEditModal = useCallback(() => {
     setEdidId(null)
     setEditName(null)
     setIsModalVisible(false)
-  }
+  }, [])
 
   return (
     <div className="tagBox">
@@ -107,12 +115,17 @@ const Tags = () => {
           type="text"
           ref={inputRef}
           placeholder="请输入新的分类..."
+          onKeyUp={(e) => {
+            if (e.keyCode === 13) {
+              createTag()
+            }
+          }}
         />
         <Button className="tagCreateBtn" type="primary" onClick={createTag}>
           新建
         </Button>
       </div>
-      <div className="tagListg">
+      <div className="tagList">
         {tagList.map((item, index) => {
           return (
             <span
@@ -161,4 +174,4 @@ const Tags = () => {
   )
 }
 
-export default Tags
+export default React.memo(Tags)

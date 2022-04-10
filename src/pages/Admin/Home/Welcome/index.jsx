@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import './style.css'
 import {
   VISITOR_AVATAR,
@@ -11,14 +11,9 @@ import { auth } from '@/network/cloudBase'
 import usePoem from '@/hooks/usePoem'
 
 const Welcome = () => {
-  const [avatar, setAvatar] = useState(VISITOR_AVATAR)
-  const [name, setName] = useState(VISITOR_NAME)
-  useEffect(() => {
-    if (auth.currentUser.uid === ADMIN_UID) {
-      setAvatar(ADMIN_AVATAR)
-      setName(ADMIN_NAME)
-    }
-  }, [avatar, name])
+  const avatar =
+    auth.currentUser.uid === ADMIN_UID ? ADMIN_AVATAR : VISITOR_AVATAR
+  const name = auth.currentUser.uid === ADMIN_UID ? ADMIN_NAME : VISITOR_NAME
 
   const hour = new Date().getHours()
   const timeText =
@@ -39,12 +34,11 @@ const Welcome = () => {
       : '夜深了'
 
   const [poem] = usePoem()
-
   return (
     <div className="welcomeBox">
       <img alt="" src={avatar} className="homeAvatar" />
       <span className="welcomeTitle">
-        {timeText}, <span className="userName">{name}</span>!
+        {timeText}, <span className="userName">{name}</span>
       </span>
       <span className="poemContent">
         {poem?.content}
@@ -54,4 +48,4 @@ const Welcome = () => {
   )
 }
 
-export default Welcome
+export default React.memo(Welcome)

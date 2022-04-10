@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useCallback, useRef, useState } from 'react'
 import { Button, List, message, Popconfirm, Modal } from 'antd'
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons'
 import {
@@ -11,10 +11,13 @@ import useClassify from '@/hooks/useClassify'
 import './style.css'
 
 const Classify = () => {
+  //新分类输入框引用
   const inputRef = useRef()
 
+  //获取分类数据
   const [classify, getClassifyFromDB] = useClassify()
 
+  //编辑分类
   const editCalssify = async () => {
     if (!editingCalssify) {
       message.warning('分类名不能为空!')
@@ -31,10 +34,11 @@ const Classify = () => {
     if (res) {
       message.success('更新成功!')
       getClassifyFromDB()
-      cancleEdit()
+      cancelEdit()
     }
   }
 
+  //删除分类
   const deleteClass = async (classify) => {
     const res = await _deleteClassify(classify._id)
     if (res) {
@@ -43,6 +47,7 @@ const Classify = () => {
     }
   }
 
+  //添加分类
   const addClassify = async () => {
     const newClassify = inputRef.current.value
     if (!newClassify) {
@@ -68,17 +73,19 @@ const Classify = () => {
   const [editingCalssifyId, setEditingCalssifyId] = useState(null)
   const [editingCalssify, setEditingCalssify] = useState(null)
 
-  const openEditModal = (editItem) => {
+  //打开编辑窗口
+  const openEditModal = useCallback((editItem) => {
     setEditingCalssify(editItem.classify)
     setEditingCalssifyId(editItem._id)
     setIsModalVisible(true)
-  }
+  }, [])
 
-  const cancleEdit = () => {
+  //关闭编辑窗口
+  const cancelEdit = useCallback(() => {
     setEditingCalssify(null)
     setEditingCalssifyId(null)
     setIsModalVisible(false)
-  }
+  }, [])
   return (
     <div className="classifyBox">
       <div className="classifyTitle">分类</div>
@@ -88,6 +95,11 @@ const Classify = () => {
           type="text"
           ref={inputRef}
           placeholder="请输入新的分类..."
+          onKeyUp={(e) => {
+            if (e.keyCode === 13) {
+              addClassify()
+            }
+          }}
         />
         <Button className="classCreateBtn" type="primary" onClick={addClassify}>
           新建
@@ -128,7 +140,7 @@ const Classify = () => {
         visible={isModalVisible}
         centered
         onOk={editCalssify}
-        onCancel={cancleEdit}
+        onCancel={cancelEdit}
         width={400}
         okText="确认"
         cancelText="取消"
@@ -149,4 +161,4 @@ const Classify = () => {
   )
 }
 
-export default Classify
+export default React.memo(Classify)

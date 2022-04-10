@@ -1,4 +1,4 @@
-import React from 'react'
+import React,{useMemo} from 'react'
 import Welcome from './Welcome'
 import Infor from './Infor'
 import Notice from './Notice'
@@ -18,7 +18,8 @@ const Home = () => {
   const [friendLinks] = useFriendlink()
   const [msgs] = useMsg()
   const [says] = useSay()
-  const statisticData = [
+  const statisticData = useMemo(() => 
+  [
     {
       label: '文章数',
       number: articles.length,
@@ -44,7 +45,7 @@ const Home = () => {
       number: says.length,
       route: ROUTES.SAY,
     },
-  ]
+  ], [articles,drafts,friendLinks,msgs,says])
   return (
     <>
       <div className="outlineBox">

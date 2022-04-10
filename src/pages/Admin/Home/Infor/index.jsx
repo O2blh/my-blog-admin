@@ -13,4 +13,4 @@ const Infor = () => {
   )
 }
 
-export default Infor
+export default React.memo(Infor)

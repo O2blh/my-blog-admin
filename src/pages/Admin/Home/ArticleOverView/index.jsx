@@ -45,4 +45,4 @@ const ArticleOverView = () => {
   )
 }
 
-export default ArticleOverView
+export default React.memo(ArticleOverView)
