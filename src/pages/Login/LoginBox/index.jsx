@@ -2,13 +2,11 @@ import React, { useState } from 'react'
 import { auth } from '../../../network/cloudBase'
 import { useDispatch } from 'react-redux'
 import { VISITOR_EMAIL, VISITOR_PWD } from '../../../constants/siteInfo'
-import { reqSvgs } from '../../../utils/helper'
 import { ACTIONS } from '../../../redux/reducers/loginState'
+import { ADMIN_AVATAR } from '@/constants/siteInfo'
 
 import './style.css'
 const LoginBox = () => {
-  const avatarUrl = reqSvgs('./tx.png')
-
   const [email, setEmail] = useState('')
   const [pwd, setPwd] = useState('')
 
@@ -25,7 +23,7 @@ const LoginBox = () => {
   }
   return (
     <div className="loginBox">
-      <img src={avatarUrl} className="avatar" alt="avatar" />
+      <img src={ADMIN_AVATAR} className="avatar" alt="avatar" />
       <div className="emailBox">
         <div className="emailLabel">邮箱</div>
         <input
