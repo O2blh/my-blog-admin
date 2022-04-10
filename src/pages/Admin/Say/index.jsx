@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import { Table, Button, Modal, Input, message, Space, Popconfirm } from 'antd'
 import { _createsay, _updatesay } from '@/network/say'
 import useSay from '@/hooks/useSay'
@@ -87,9 +87,12 @@ const Say = () => {
     setIsModalVisible(false)
   }
 
-  const emojiClickCallback = (emoji) => {
-    setSayContent(sayContent + emoji)
-  }
+  const emojiClickCallback = useCallback(
+    (emoji) => {
+      setSayContent(sayContent + emoji)
+    },
+    [sayContent]
+  )
 
   const columns = [
     {

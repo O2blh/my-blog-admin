@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback, useMemo } from 'react'
 import { Popover, Button } from 'antd'
 import {
   emojiPeople,
@@ -11,23 +11,14 @@ import {
 import './style.css'
 
 const Emoji = ({ emojiClickCallback }) => {
-  const emojiClick = (e) => {
-    emojiClickCallback(e.target.textContent)
-  }
+  const emojiClick = useCallback(
+    (e) => {
+      emojiClickCallback(e.target.textContent)
+    },
+    [emojiClickCallback]
+  )
 
-  function wrapEmoji(emojiStr) {
-    const emojiArray = toEmojiArray(emojiStr)
-    const wrapEmojiArray = emojiArray.map((emoji, index) => {
-      return (
-        <span className="emoji" title={emoji} key={index} onClick={emojiClick}>
-          {emoji}
-        </span>
-      )
-    })
-    return wrapEmojiArray
-  }
-
-  function toEmojiArray(emojiStr) {
+  const toEmojiArray = useCallback((emojiStr) => {
     let len = emojiStr.length
     let i = 0
     const emojiArray = []
@@ -42,13 +33,33 @@ const Emoji = ({ emojiClickCallback }) => {
       }
     }
     return emojiArray
-  }
+  }, [])
 
-  const wrapEmojiPeople = wrapEmoji(emojiPeople)
-  const wrapEmojiNature = wrapEmoji(emojiNature)
-  const wrapEmojiObj = wrapEmoji(emojiObj)
-  const wrapEmojiPlace = wrapEmoji(emojiPlace)
-  const wrapEmojiSymbol = wrapEmoji(emojiSymbol)
+  const wrapEmoji = useCallback(
+    (emojiStr) => {
+      const emojiArray = toEmojiArray(emojiStr)
+      const wrapEmojiArray = emojiArray.map((emoji, index) => {
+        return (
+          <span
+            className="emoji"
+            title={emoji}
+            key={index}
+            onClick={emojiClick}
+          >
+            {emoji}
+          </span>
+        )
+      })
+      return wrapEmojiArray
+    },
+    [toEmojiArray, emojiClick]
+  )
+
+  const wrapEmojiPeople = useMemo(() => wrapEmoji(emojiPeople), [wrapEmoji])
+  const wrapEmojiNature = useMemo(() => wrapEmoji(emojiNature), [wrapEmoji])
+  const wrapEmojiObj = useMemo(() => wrapEmoji(emojiObj), [wrapEmoji])
+  const wrapEmojiPlace = useMemo(() => wrapEmoji(emojiPlace), [wrapEmoji])
+  const wrapEmojiSymbol = useMemo(() => wrapEmoji(emojiSymbol), [wrapEmoji])
 
   return (
     <div className="emojBox">
@@ -101,4 +112,4 @@ const Emoji = ({ emojiClickCallback }) => {
   )
 }
 
-export default Emoji
+export default React.memo(Emoji)
