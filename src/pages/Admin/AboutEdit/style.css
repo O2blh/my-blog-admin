@@ -43,6 +43,7 @@
 .aboutEditBox .inputRegion {
   flex: 1 1;
   background-color: #c8f3fd;
+  padding: 20px;
 }
 .aboutEditBox .showRegion {
   flex: 1 1;

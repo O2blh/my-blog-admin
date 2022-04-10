@@ -43,6 +43,7 @@
 .aboutContent {
   flex: 1 1 auto;
   background-color: #c8f3fd;
+  padding: 20px;
 }
 .aboutSite .aboutContent {
   background-color: #b4f0fd;

@@ -28,6 +28,7 @@ const AboutEdit = () => {
   const getAboutFromDb = async (type) => {
     const res = await _getAbout(type)
     if (res && res.length) {
+      console.log(res)
       setId(res[0]._id)
       setContent(res[0].content)
       const mkd = marked(res[0].content)
@@ -66,6 +67,7 @@ const AboutEdit = () => {
         content,
         modifyDate: Date.now(),
       })
+      console.log(res)
     }
   }
   //使用useMemo保证保证每次获取的都是防抖之后的函数
@@ -73,6 +75,10 @@ const AboutEdit = () => {
     () => debounce(autoSaveContent, 1000),
     []
   )
+
+  useEffect(() => {
+    debounceAutoSaveContent(content)
+  }, [content, debounceAutoSaveContent])
 
   return (
     <div className="aboutEditBox">
@@ -89,7 +95,6 @@ const AboutEdit = () => {
             setContent(e.target.value)
             const mkd = marked(e.target.value)
             setMarkdownContent(mkd)
-            debounceAutoSaveContent(e.target.value)
           }}
           value={content}
         ></TextArea>
