@@ -51,8 +51,8 @@ const RightBox = ({ autoSaveMsg, state, dispatch }) => {
   )
 }
 
-function areEqual(prevProps, nextProps) {
-  return prevProps.state.autoSaveMsg === nextProps.state.autoSaveMsg
-}
+// function areEqual(prevProps, nextProps) {
+//   return prevProps.state.autoSaveMsg === nextProps.state.autoSaveMsg
+// }
 
-export default React.memo(RightBox, areEqual)
+export default React.memo(RightBox)
