@@ -20,7 +20,7 @@ const Emoji = ({ emojiClickCallback }) => {
 
   const toEmojiArray = useCallback((emojiStr) => {
     const emojiArray = []
-    const regex = /\uD83C[\uD000-\uDFFF]|\uD83D[\uD000-\uDFFF]|[\u2000-\u2FFF](\uFE0F)?/g
+    const regex = /\uD83C[\uD000-\uDFFF](\uFE0F)?|\uD83D[\uD000-\uDFFF](\uFE0F)?|[\u2000-\u2FFF](\uFE0F)?/g
     const arr = emojiStr.match(regex)
     for (let i = 0; i < arr.length; i += 1) {
       emojiArray.push(arr[i])
