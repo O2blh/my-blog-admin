@@ -14,6 +14,7 @@ const LoginBox = () => {
   const handleLogin = (isVistor) => {
     const user = isVistor ? VISITOR_EMAIL : email
     const password = isVistor ? VISITOR_PWD : pwd
+    // auth.signUpWithEmailAndPassword(user, password).then((loginState) => {
     auth.signInWithEmailAndPassword(user, password).then((loginState) => {
       dispatch({
         type: ACTIONS.LOGIN,

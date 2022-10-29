@@ -60,25 +60,29 @@ const AboutEdit = () => {
   })
 
   //自动保存到数据库
-  const autoSaveContent = async (content) => {
-    if (id) {
-      const res = await _updateAbout(id, {
-        type,
-        content,
-        modifyDate: Date.now(),
-      })
-      console.log(res)
+  const autoSaveContent = useMemo(()=>{
+    return async (content) => {
+      if (id) {
+        const res = await _updateAbout(id, {
+          type,
+          content,
+          modifyDate: Date.now(),
+        })
+        console.log(res)
+      }
     }
-  }
+  },[id, type])
+
   //使用useMemo保证保证每次获取的都是防抖之后的函数
   const debounceAutoSaveContent = useMemo(
     () => debounce(autoSaveContent, 1000),
-    []
+    [autoSaveContent]
   )
 
   useEffect(() => {
     debounceAutoSaveContent(content)
   }, [content, debounceAutoSaveContent])
+
 
   return (
     <div className="aboutEditBox">

@@ -12,8 +12,8 @@ import usePoem from '@/hooks/usePoem'
 
 const Welcome = () => {
   const avatar =
-    auth.currentUser.uid === ADMIN_UID ? ADMIN_AVATAR : VISITOR_AVATAR
-  const name = auth.currentUser.uid === ADMIN_UID ? ADMIN_NAME : VISITOR_NAME
+    auth.currentUser?.uid === ADMIN_UID ? ADMIN_AVATAR : VISITOR_AVATAR
+  const name = auth.currentUser?.uid === ADMIN_UID ? ADMIN_NAME : VISITOR_NAME
 
   const hour = new Date().getHours()
   const timeText =

@@ -7,7 +7,9 @@ export default function useNotice() {
   const [Notice, setNotice] = useState('')
   const getNoticeFromDB = async () => {
     const res = await _getNotice()
-    setNotice(res[0].notice)
+    if (res && res.length > 0) {
+      setNotice(res[0].notice)
+    }
   }
   useEffect(() => {
     getNoticeFromDB()

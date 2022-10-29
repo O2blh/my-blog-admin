@@ -5,9 +5,7 @@ export const app = cloudbase.init({
   env: ENV_ID,
 })
 
-export const auth = app.auth({
-  persistence: 'local',
-})
+export const auth = app.auth()
 
 export const db = app.database()
 
