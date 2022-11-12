@@ -27,6 +27,13 @@ const WebSiteLogs = () => {
   const [isEdit, setIsEdit] = useState(false)
   const [editId, setEditId] = useState(null)
 
+  const getLogMill = (date) => {
+    const logTime = date +" "+ dayjs().format('HH:mm:ss')
+    const time = dayjs(logTime, 'YYYY-MM-DD HH:mm:ss')
+    const logMill = time.valueOf()
+    return logMill
+  }
+
   //创建或更新日志
   const createOrUpdateLog = async () => {
     if (auth.currentUser.uid !== ADMIN_UID) {
@@ -40,9 +47,10 @@ const WebSiteLogs = () => {
     }
 
     if (editId) {
+     
       const res = await _updateSiteLog(editId, {
         content,
-        logDate,
+        logDate: getLogMill(logDate),
       })
       if (res) {
         message.success('更新成功')
@@ -52,7 +60,7 @@ const WebSiteLogs = () => {
     } else {
       const res = await _createSiteLog({
         content,
-        logDate,
+        logDate: getLogMill(logDate),
       })
       if (res) {
         message.success('创建成功')
@@ -89,7 +97,7 @@ const WebSiteLogs = () => {
     setIsEdit(true)
     setEditId(log._id)
     setContent(log.content)
-    setLogDate(log.logDate)
+    setLogDate(dayjs(log.logDate).format('YYYY-MM-DD'))
     setIsModalVisible(true)
   }
 

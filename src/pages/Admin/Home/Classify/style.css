@@ -1,7 +1,8 @@
 .classifyBox {
   position: relative;
   margin-left: 20px;
-  flex: 1 1;
+  flex: 1;
+  padding: 10px;
 }
 .classifyBox:hover {
   box-shadow: 0 0 10px rgb(0 0 0 / 40%);

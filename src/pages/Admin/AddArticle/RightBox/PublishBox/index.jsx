@@ -86,6 +86,10 @@ const PublishBox = ({
         classify,
         abstract,
         draftId,
+        view: 0,
+        collection: 0,
+        star: 0,
+        share: 0
       })
       if (res) {
         message.success('发布成功!')
