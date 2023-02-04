@@ -9,7 +9,7 @@ import './style.css'
 const Header = () => {
   const dispatch = useDispatch()
   const loginOut = () => {
-    localStorage.clear()
+    sessionStorage.clear()
     dispatch({
       type: ACTIONS.LOGOUT,
     })

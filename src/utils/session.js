@@ -1,9 +1,9 @@
-import { DEFAULT_VALUE, localStorageFactory } from './localStorage'
+import { DEFAULT_VALUE, sessionStorageFactory } from './sessionStorage'
 import { ENV_ID } from '../constants/siteInfo'
 
 const KEY = `user_info_${ENV_ID}`
 
-export const sessionLocalStorage = localStorageFactory({
+export const sessionLocalStorage = sessionStorageFactory({
   key: KEY,
   defaultValue: DEFAULT_VALUE.OBJECT,
 })
