@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux'
 import { VISITOR_EMAIL, VISITOR_PWD } from '../../../constants/siteInfo'
 import { ACTIONS } from '../../../redux/reducers/loginState'
 import { ADMIN_AVATAR } from '@/constants/siteInfo'
+import { message } from 'antd'
 
 import './style.css'
 const LoginBox = () => {
@@ -15,12 +16,18 @@ const LoginBox = () => {
     const user = isVistor ? VISITOR_EMAIL : email
     const password = isVistor ? VISITOR_PWD : pwd
     // auth.signUpWithEmailAndPassword(user, password).then((loginState) => {
-    auth.signInWithEmailAndPassword(user, password).then((loginState) => {
-      dispatch({
-        type: ACTIONS.LOGIN,
-        payload: loginState.user,
+    auth
+      .signInWithEmailAndPassword(user, password)
+      .then((loginState) => {
+        dispatch({
+          type: ACTIONS.LOGIN,
+          payload: loginState.user,
+        })
       })
-    })
+      .catch((e) => {
+        message.error('用户名或密码错误')
+        console.log(e)
+      })
   }
   return (
     <div className="loginBox">
@@ -29,8 +36,8 @@ const LoginBox = () => {
         <div className="emailLabel">邮箱</div>
         <input
           type="text"
+          name="user[login]"
           value={email}
-          autoComplete="off"
           onChange={(e) => setEmail(e.target.value)}
         />
       </div>
@@ -39,7 +46,6 @@ const LoginBox = () => {
         <input
           type="password"
           value={pwd}
-          autoComplete="new-password"
           onChange={(e) => setPwd(e.target.value)}
         />
       </div>
